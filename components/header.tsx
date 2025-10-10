@@ -12,7 +12,7 @@ export function Header() {
         </span>
       </div>
       <div className="flex justify-center items-center gap-8">
-        <Link href="#">文章</Link>
+        <Link href="#">Writing</Link>
       </div>
     </header>
   );

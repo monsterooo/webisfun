@@ -1,12 +1,22 @@
 export const PROFILE = {
-  NAME: "土豆",
-  DESCRIPTIOIN:
-    "我是土豆，一位充满激情的程序员和自豪的父亲。我创造创新解决方案并分享知识。热爱编程、家庭时光和探索新技术。",
-  AVATAR: "https://static.webisfun.dev/authors/jiangzhu.png",
+  EMAIL_URL: "mailto:createthink.net@gmail.com",
   TWITTER_URL: "https://x.com/BuildWithZhu",
   GITHUB_URL: "https://github.com/monsterooo",
 };
 
-export const WEB_CONFIG = {
-  NAME: "WebIsFun",
-};
+export const PROJECTS = [
+  {
+    title: "SVGX",
+    category: "Web",
+    description:
+      "AI-powered tool to quickly create custom, high-quality SVG icons and graphics—no design skills needed.",
+    url: "https://svgx.io",
+  },
+  {
+    title: "FileX",
+    category: "Web",
+    description:
+      "Convert images between all popular formats online for free. PNG to JPG, JPG to PNG, JPG to SVG and more. Fast, secure, and easy-to-use image conversion tool.",
+    url: "https://filex.to",
+  },
+];
