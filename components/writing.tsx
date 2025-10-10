@@ -3,7 +3,7 @@ import { allBlogs } from "@/.content-collections/generated";
 import { groupedByYear } from "@/lib/blog";
 
 export function Writing() {
-  const blogs = groupedByYear(allBlogs);
+  const blogs = groupedByYear(allBlogs.filter((blog) => blog.published));
 
   return (
     <div className="grid grid-cols-3 gap-4">

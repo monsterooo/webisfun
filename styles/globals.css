@@ -50,6 +50,7 @@
   --container: var(--container);
 
   --color-divider: var(--divider);
+  --color-write-card-background: var(--write-card-background);
 
   /* @keyframes link-effect-start {
     0% {
@@ -100,6 +101,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   --divider: oklch(0.58 0.01 0);
+  --write-card-background: oklch(0.91 0 0);
 
   /* 自定义间距 */
   /* --spacing-1: 0.25rem; */
