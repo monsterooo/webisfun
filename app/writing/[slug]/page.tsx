@@ -44,14 +44,14 @@ export default function Writing(props: { params: Params }) {
         <h1 className="font-plantin text-5xl sm:text-[52px] leading-[1.2] text-foreground">
           {blog.title}
         </h1>
-        <p className="text-xl mt-2">{blog.summary}</p>
+        <p className="text-xl mt-2 leading-[1.6]">{blog.summary}</p>
         <p className="mt-4 text-sm text-foreground/70">
           {formatDate({ date: new Date(blog.publishedAt) })}
         </p>
         <HR className="my-8" />
       </div>
 
-      <div className="grid grid-cols-[minmax(0px,_1fr)_200px] gap-12">
+      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0px,_1fr)_200px] gap-12">
         <div>
           <Image
             src={blog.image ?? ""}
@@ -64,7 +64,7 @@ export default function Writing(props: { params: Params }) {
             <MDX code={blog.body} />
           </div>
         </div>
-        <div>
+        <div className="hidden sm:block">
           <TableOfContents data={blog.content} />
         </div>
       </div>

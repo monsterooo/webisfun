@@ -6,7 +6,7 @@ export function Writing() {
   const blogs = groupedByYear(allBlogs.filter((blog) => blog.published));
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div>
         <hr className="opacity-60 w-8 border-0 border-b-2 mb-5" />
         <h3 className="font-plantin leading-[1.2] text-4xl mb-6 text-foreground">

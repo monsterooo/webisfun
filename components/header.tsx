@@ -3,14 +3,14 @@ import Link from "next/link";
 export function Header() {
   return (
     <header className="max-w-5xl mx-auto flex justify-between h-12">
-      <div className="flex justify-center items-center gap-2">
+      <Link href="/" className="flex justify-center items-center gap-2">
         <div className="size-6 bg-primary text-white rounded-full text-sm flex justify-center items-center">
           W
         </div>
         <span className="text-2xl leading-none font-plantin mt-1.5">
           WebIsFun
         </span>
-      </div>
+      </Link>
       <div className="flex justify-center items-center gap-8">
         <Link href="/writing">Writing</Link>
       </div>
