@@ -2,7 +2,7 @@ import { PROFILE } from "@/lib/constants";
 
 export function Footer() {
   return (
-    <footer className="max-w-4xl mx-auto">
+    <footer className="max-w-5xl mx-auto">
       <hr className="opacity-60 mt-20 mb-6 border-dashed border-0 border-b border-divider" />
       <div className="flex gap-3 text-sm text-foreground">
         <a

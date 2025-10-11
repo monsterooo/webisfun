@@ -23,7 +23,6 @@ export function Writing() {
               <h2>
                 <Link
                   href={`/writing/${blog.slug}`}
-                  target="_blank"
                   className="text-primary font-plantin text-4xl leading-[1.2] hover:decoration-primary underline decoration-transparent transition underline-offset-2"
                 >
                   {blog.title}

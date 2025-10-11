@@ -146,6 +146,12 @@
 }
 
 @layer components {
+  .shiki {
+    background-color: var(--shiki-light-bg);
+    * {
+      color: var(--shiki-light);
+    }
+  }
 }
 
 

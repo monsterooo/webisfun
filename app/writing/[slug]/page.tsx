@@ -1,6 +1,12 @@
 import { use } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { allBlogs } from "@/.content-collections/generated";
+import { formatDate } from "@/lib/date";
+import { HR } from "@/components/hr";
+import { MDX } from "@/components/mdx";
+import { TableOfContents } from "@/components/toc";
 
 type Params = Promise<{ slug: string }>;
 
@@ -11,6 +17,57 @@ export default function Writing(props: { params: Params }) {
   if (!blog) {
     return notFound();
   }
-  console.log("blog", blog);
-  return <div>Writing</div>;
+  return (
+    <main className="max-w-5xl mx-auto mt-20">
+      <div>
+        <nav className="text-primary mb-3 text-lg">
+          <ol className="flex items-center">
+            <li>
+              <Link
+                href="/"
+                className="hover:decoration-primary underline decoration-transparent transition text-primary underline-offset-2"
+              >
+                Home
+              </Link>
+              <span className="mx-2 text-foreground">/</span>
+            </li>
+            <li>
+              <Link
+                href="/writing"
+                className="hover:decoration-primary underline decoration-transparent transition text-primary underline-offset-2"
+              >
+                Writing
+              </Link>
+            </li>
+          </ol>
+        </nav>
+        <h1 className="font-plantin text-5xl sm:text-[52px] leading-[1.2] text-foreground">
+          {blog.title}
+        </h1>
+        <p className="text-xl mt-2">{blog.summary}</p>
+        <p className="mt-4 text-sm text-foreground/70">
+          {formatDate({ date: new Date(blog.publishedAt) })}
+        </p>
+        <HR className="my-8" />
+      </div>
+
+      <div className="grid grid-cols-[minmax(0px,_1fr)_200px] gap-12">
+        <div>
+          <Image
+            src={blog.image ?? ""}
+            alt={blog.title}
+            width={1024}
+            height={630}
+            className="w-full mb-12"
+          />
+          <div className="prose">
+            <MDX code={blog.body} />
+          </div>
+        </div>
+        <div>
+          <TableOfContents data={blog.content} />
+        </div>
+      </div>
+    </main>
+  );
 }

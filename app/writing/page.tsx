@@ -22,7 +22,7 @@ export default function Writing() {
               key={index}
               className="p-8 bg-write-card-background rounded-lg"
             >
-              <Link href="#">
+              <Link href={"/writing/" + blog.slug}>
                 <div className="relative h-[200px]">
                   <Image
                     src={blog.image ?? ""}
@@ -31,7 +31,14 @@ export default function Writing() {
                     className="object-cover"
                   />
                 </div>
-                <data>{formatDate({ date: new Date(blog.publishedAt) })}</data>
+                <data className="block text-primary text-sm mt-5 mb-3 font-medium">
+                  {formatDate({ date: new Date(blog.publishedAt) })}
+                </data>
+                <h2 className="font-plantin leading-[1.2] text-3xl mb-2 text-foreground">
+                  {blog.title}
+                </h2>
+                <p className="text-lg mb-4">{blog.summary}</p>
+                <span className="text-primary text-sm">Read more</span>
               </Link>
             </div>
           );

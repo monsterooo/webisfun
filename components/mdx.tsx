@@ -1,11 +1,15 @@
-import { useMDXComponent } from "@content-collections/mdx/react";
+import { MDXContent } from "@content-collections/mdx/react";
 
-export function MDX({ code, className }: { code: string; className?: string }) {
-  const Component = useMDXComponent(code);
-
+export async function MDX({
+  code,
+  className,
+}: {
+  code: string;
+  className?: string;
+}) {
   return (
     <article className={className}>
-      <Component components={{}} />
+      <MDXContent code={code} components={{}} />
     </article>
   );
 }

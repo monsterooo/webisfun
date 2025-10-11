@@ -3,13 +3,15 @@ import { compileMDX } from "@content-collections/mdx";
 import {
   rehypeCode,
   RehypeCodeOptions,
+  rehypeToc,
   remarkGfm,
+  remarkHeading,
 } from "fumadocs-core/mdx-plugins";
 
 const rehypeCodeOptions: RehypeCodeOptions = {
   themes: {
-    light: "catppuccin-mocha",
-    dark: "catppuccin-mocha",
+    light: "github-dark",
+    dark: "github-dark",
   },
 };
 
@@ -28,9 +30,12 @@ const Blog = defineCollection({
     tags: z.array(z.string()).optional(),
   }),
   transform: async (document, context) => {
+    // console.log("content:", document.content);
+    // const toc = getTableOfContents(document.content);
+    // console.log("toc:", toc);
     const body = await compileMDX(context, document, {
-      remarkPlugins: [remarkGfm],
-      rehypePlugins: [[rehypeCode, rehypeCodeOptions]],
+      remarkPlugins: [remarkGfm, remarkHeading],
+      rehypePlugins: [rehypeToc, [rehypeCode, rehypeCodeOptions]],
     });
 
     return {
