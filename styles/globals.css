@@ -152,6 +152,13 @@
       color: var(--shiki-light);
     }
   }
+  .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply bg-primary/20 p-1 rounded;
+
+    &::before, &::after {
+      @apply hidden;
+    }
+  }
 }
 
 
