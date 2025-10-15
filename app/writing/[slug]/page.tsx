@@ -60,7 +60,7 @@ export default function Writing(props: { params: Params }) {
             height={630}
             className="w-full mb-12"
           />
-          <div className="prose">
+          <div className="prose max-w-fit">
             <MDX code={blog.body} />
           </div>
         </div>

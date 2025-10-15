@@ -1,0 +1,76 @@
+---
+title: "Keyframe Animations"
+summary: "在CSS动画中关键帧动画是一种常见的动画方式，它允许在同一帧中执行多个动画属性。关键帧动画可以实现复杂的动画效果，例如旋转、缩放、位移等。"
+author: "BuildWithZhu"
+publishedAt: "2025-10-12"
+published: true
+image: "/images/keyframes-animations-convert.jpg"
+category: "CSS"
+---
+
+CSS 的关键帧动画(Keyframe Animations)是 Web 开发中常用的动画方式，通过了解关键帧的语法和技巧可以让它像过渡动画一样实现复杂的动画效果。同时也能保持它作为CSS的灵活性。
+
+本文章将介绍关键帧动画的基本语法和技巧，并介绍如何在 CSS 中使用它们。
+
+## 语法
+
+CSS 关键帧动画使用 `@keyframes` 规则定义动画，其中包含一系列动画属性和关键帧。定义如下：
+
+```css
+@keyframes fadeIn {
+  /* 关键帧 */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+```
+
+上面代码中使用 `@keyframes` 规则定义了一个名为 `fadeIn` 的关键帧，你可以将其视为一个全局变量。我们可以在 CSS 代码中的任何位置使用此关键帧动画。
+
+这里我们定义的 `fadeIn` 类似于 JavaScript 中的函数，它本身不执行任何操作，我们需要使用 `animation` CSS 属性将关键帧应用到元素上。
+
+```css
+.element {
+  animation: fadeIn 1000ms;
+}
+```
+
+`animation` 至少需要两个值：
+
+1. 要应用的关键帧动画名称，在这里为 `fadeIn`
+
+2. 动画持续时间，单位为毫秒（ms）
+
+在上面代码中的真正意思是，我们的元素应该在 1 秒内淡入。我在 `from` 块中设置的任何 CSS (在本例中 `opacity: 0`) 都会**立即生效**，并且元素将平滑过渡到 `to` 快中设置的任何 CSS (`opacity: 1`)。
+
+## 动画简写
+
+`animation` 属性是一个"简写"属性。这意味着它可以方便地一次性设置多个属性。完整的写法如下：
+
+```css
+.element {
+  animation-name: fadeIn;
+  animation-duration: 1000ms;
+}
+```
+
+一般来说，使用 `animation` 简写更为常见，将各种值放入其中，就像将各种食材放入锅中一样。本文后面也将会使用简写的形式。
+
+以下是一个可供你体验的实例。
+
+<Codepen id="GgoMwvx" />
+
+## 多属性动画
+
+我们可以在同一个动画声明中为多个 CSS 属性设置动画。下面是一个更酷炫的例子，它一次改变多个属性：
+
+<Codepen id="bNEozVg" />
+
+在上面的例子中我在关键帧里面一次性改变了两个属性(background、transform)，关于 transform 后面还会继续讲解。
+
+## 循环动画
+
+默认情况下关键帧只会执行一次，但我们可以通过在动画中添加 `infinite` 关键字来制定他们反复运行。这对于 loading 之类的动画很有用。

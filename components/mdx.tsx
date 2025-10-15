@@ -1,4 +1,5 @@
 import { MDXContent } from "@content-collections/mdx/react";
+import { Codepen } from "./mdx/codepen";
 
 export async function MDX({
   code,
@@ -7,9 +8,12 @@ export async function MDX({
   code: string;
   className?: string;
 }) {
+  const components = {
+    Codepen,
+  };
   return (
     <article className={className}>
-      <MDXContent code={code} components={{}} />
+      <MDXContent code={code} components={components} />
     </article>
   );
 }
