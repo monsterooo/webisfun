@@ -4,18 +4,24 @@ import { allBlogs } from "@/.content-collections/generated";
 import { formatDate } from "@/lib/date";
 import { HR } from "@/components/hr";
 
+export const metadata = {
+  title: "Writing",
+  description:
+    "Uncover, record, and share the most intriguing and fun ideas from the vibrant world of programming.",
+};
+
 export default function Writing() {
   const blogs = allBlogs.filter((blog) => blog.published);
 
   return (
-    <main className="max-w-4xl mx-auto sm:mt-20">
+    <main className="max-w-4xl mx-auto mt-10 sm:mt-20">
       <h1 className="font-plantin text-[56px] leading-[1.2]">Writing</h1>
       <p className="text-lg leading-[1.6]">
         Uncover, record, and share the most intriguing and fun ideas from the
         vibrant world of programming.
       </p>
       <HR className="my-8" />
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {blogs.map((blog, index) => {
           return (
             <div

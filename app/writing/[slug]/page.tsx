@@ -10,6 +10,20 @@ import { TableOfContents } from "@/components/toc";
 
 type Params = Promise<{ slug: string }>;
 
+export const generateMetadata = async (props: { params: Params }) => {
+  const { slug } = await props.params;
+  const blog = allBlogs.find((blog) => blog.slug === slug);
+
+  if (!blog) {
+    return notFound();
+  }
+
+  return {
+    title: blog.title,
+    description: blog.summary,
+  };
+};
+
 export default function Writing(props: { params: Params }) {
   const { slug } = use(props.params);
   const blog = allBlogs.find((blog) => blog.slug === slug);
