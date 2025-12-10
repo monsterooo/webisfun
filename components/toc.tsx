@@ -8,7 +8,17 @@ export const TableOfContents = async ({ data }: TableOfContentsProperties) => {
 
   return (
     <aside className="block sticky top-20">
-      <ul className="flex list-none flex-col gap-2 text-sm">
+      <style>
+        {`
+          .toc {
+            scroll-target-group: auto;
+          }
+          .toc li a:target-current {
+            color: var(--primary);
+          }
+        `}
+      </style>
+      <ul className="flex list-none flex-col gap-2 text-sm toc">
         {toc.map((item) => (
           <li
             key={item.url}
