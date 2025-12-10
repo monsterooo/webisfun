@@ -3,6 +3,7 @@ import Link from "next/link";
 import { allBlogs } from "@/.content-collections/generated";
 import { formatDate } from "@/lib/date";
 import { HR } from "@/components/hr";
+import { ArrowRightIcon } from "@/components/icons/arrow-right-icon";
 
 export const metadata = {
   title: "Writing",
@@ -26,7 +27,7 @@ export default function Writing() {
           return (
             <div
               key={index}
-              className="p-8 bg-write-card-background rounded-lg"
+              className="p-8 bg-write-card-background hover:bg-primary/10 rounded-lg"
             >
               <Link href={"/writing/" + blog.slug}>
                 <div className="relative h-[200px]">
@@ -44,7 +45,10 @@ export default function Writing() {
                   {blog.title}
                 </h2>
                 <p className="text-lg mb-4">{blog.summary}</p>
-                <span className="text-primary text-sm">Read more</span>
+                <span className="text-primary text-sm flex justify-start items-center">
+                  Read more
+                  <ArrowRightIcon className="ml-2" size={18} />
+                </span>
               </Link>
             </div>
           );
