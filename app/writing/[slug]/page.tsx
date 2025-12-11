@@ -65,21 +65,18 @@ export default function Writing(props: { params: Params }) {
         <HR className="my-8" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0px,_1fr)_200px] gap-12">
-        <div>
-          <Image
-            src={blog.image ?? ""}
-            alt={blog.title}
-            width={1024}
-            height={630}
-            className="w-full mb-12"
-          />
-          <div className="prose max-w-fit">
-            <MDX code={blog.body} />
-          </div>
-        </div>
-        <div className="hidden sm:block">
-          <TableOfContents data={blog.content} />
+      <TableOfContents data={blog.content} title={blog.title} />
+
+      <div>
+        <Image
+          src={blog.image ?? ""}
+          alt={blog.title}
+          width={1024}
+          height={630}
+          className="w-full mb-12"
+        />
+        <div className="prose max-w-fit">
+          <MDX code={blog.body} />
         </div>
       </div>
     </main>
