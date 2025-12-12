@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef } from "react";
+import { useMemo, useState } from "react";
+import { useWindowScroll } from "@uidotdev/usehooks";
 import { getTableOfContents } from "fumadocs-core/server";
-import { motion, useScroll, useTransform } from "motion/react";
+import { cn } from "@/lib/utils";
 import {
   Accordion,
   AccordionContent,
@@ -15,40 +16,32 @@ type TableOfContentsProperties = {
   title: string;
 };
 export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
+  const [{ y }] = useWindowScroll();
   const toc = getTableOfContents(data);
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollY } = useScroll();
-  // 当页面滚动时，计算元素应该的 Y 位移（实现“吸顶”效果）
-  const y = useTransform(scrollY, [0, 300], [-100, 0]);
-  const opacity = useTransform(scrollY, [0, 300], [0, 1]);
+  const [accordionOpen, setAccordionOpen] = useState("");
+
+  const isShow = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    const metadata = document.querySelector(".writing-metadata");
+    const rect = metadata?.getBoundingClientRect();
+    const metadataOffset = rect ? rect.top + rect.height + (y ?? 0) : 0;
+
+    setAccordionOpen("");
+
+    if (rect && y && y >= metadataOffset) {
+      return true;
+    }
+    return false;
+  }, [y]);
 
   return (
-    <motion.aside
-      ref={ref}
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        paddingTop: "1rem",
-        color: "white",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        zIndex: 999,
-        // 使用 transform 控制动画
-        y,
-        opacity,
-      }}
-      initial={{ y: -100, opacity: 0 }} // 初始在顶部外面
-      animate={{ y: 0, opacity: 1 }} // 滚动到顶部时进入
-      transition={{
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-      }}
-      className="block"
+    <aside
+      className={cn(
+        "flex fixed left-0 right-0 top-4 text-white justify-center items-center animate-[slideDown_200ms_ease-out]",
+        {
+          hidden: !isShow,
+        }
+      )}
     >
       <style>
         {`
@@ -84,7 +77,13 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
           }
         `}
       </style>
-      <Accordion className="bg-primary rounded-lg" type="single" collapsible>
+      <Accordion
+        className="bg-primary rounded-lg"
+        type="single"
+        collapsible
+        value={accordionOpen}
+        onValueChange={(value) => setAccordionOpen(value)}
+      >
         <AccordionItem value="toc-accordion">
           <AccordionTrigger className="[&>svg]:text-white px-4">
             {title}
@@ -110,6 +109,6 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-    </motion.aside>
+    </aside>
   );
 };

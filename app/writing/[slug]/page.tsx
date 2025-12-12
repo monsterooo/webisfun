@@ -33,7 +33,7 @@ export default function Writing(props: { params: Params }) {
   }
   return (
     <main className="max-w-5xl mx-auto mt-20">
-      <div>
+      <div className="writing-metadata">
         <nav className="text-primary mb-3 text-lg">
           <ol className="flex items-center">
             <li>
