@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useWindowScroll } from "@uidotdev/usehooks";
 import { getTableOfContents } from "fumadocs-core/server";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ type TableOfContentsProperties = {
   title: string;
 };
 export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
+  const accordionRef = useRef<HTMLDivElement>(null);
   const [{ y }] = useWindowScroll();
   const toc = getTableOfContents(data);
   const [accordionOpen, setAccordionOpen] = useState("");
@@ -26,13 +27,28 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
     const rect = metadata?.getBoundingClientRect();
     const metadataOffset = rect ? rect.top + rect.height + (y ?? 0) : 0;
 
-    setAccordionOpen("");
-
     if (rect && y && y >= metadataOffset) {
       return true;
     }
     return false;
   }, [y]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        accordionRef.current &&
+        !accordionRef.current.contains(event.target as Node) &&
+        accordionOpen
+      ) {
+        setAccordionOpen("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [accordionOpen]);
 
   return (
     <aside
@@ -77,6 +93,7 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
         `}
       </style>
       <Accordion
+        ref={accordionRef}
         className={cn(
           "bg-primary/30 rounded-2xl transition-all ease-in-out duration-300 backdrop-saturate-[1.15] backdrop-blur-[12px]"
         )}
