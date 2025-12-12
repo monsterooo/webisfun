@@ -37,7 +37,7 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
   return (
     <aside
       className={cn(
-        "flex fixed left-0 right-0 top-4 text-white justify-center items-center animate-[slideDown_200ms_ease-out]",
+        "flex fixed left-0 right-0 top-4 text-white justify-center items-center animate-[slideDown_200ms_ease-out] select-none",
         {
           hidden: !isShow,
         }
@@ -53,11 +53,10 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
           }
           .toc li a {
             overflow: visible;
-            color: white;
             position: relative;
           }
           .toc li a:target-current {
-            // color: var(--primary);
+            color: white;
           }
           .toc li a::before {
             content: '';
@@ -78,18 +77,20 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
         `}
       </style>
       <Accordion
-        className="bg-primary rounded-lg"
+        className={cn(
+          "bg-primary/30 rounded-2xl transition-all ease-in-out duration-300 backdrop-saturate-[1.15] backdrop-blur-[12px]"
+        )}
         type="single"
         collapsible
         value={accordionOpen}
         onValueChange={(value) => setAccordionOpen(value)}
       >
         <AccordionItem value="toc-accordion">
-          <AccordionTrigger className="[&>svg]:text-white px-4">
+          <AccordionTrigger className="[&>svg]:text-white px-4 hover:no-underline py-2">
             {title}
           </AccordionTrigger>
           <AccordionContent className="flex flex-col gap-4 text-balance">
-            <ul className="flex list-none flex-col gap-2 text-sm toc">
+            <ul className="flex list-none flex-col gap-2 text-sm toc max-h-[70vh] overflow-y-auto">
               {toc.map((item) => (
                 <li
                   key={item.url}
@@ -99,7 +100,7 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
                 >
                   <a
                     href={item.url}
-                    className="line-clamp-3 flex rounded-sm text-foreground text-sm underline decoration-foreground/0 transition-colors hover:decoration-foreground/50"
+                    className="line-clamp-3 flex rounded-sm text-gray-800 hover:text-white text-sm decoration-foreground/0 transition-colors hover:decoration-foreground/50"
                   >
                     {item.title}
                   </a>
