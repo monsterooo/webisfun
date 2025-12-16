@@ -1,5 +1,6 @@
 import { MDXContent } from "@content-collections/mdx/react";
 import { Codepen } from "./mdx/codepen";
+import { Sandpack } from "./mdx/sandpack";
 
 export async function MDX({
   code,
@@ -10,6 +11,7 @@ export async function MDX({
 }) {
   const components = {
     Codepen,
+    Sandpack,
   };
   return (
     <article className={className}>
