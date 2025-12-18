@@ -10,6 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { ScrollProgress } from "./scroll-progess";
 
 type TableOfContentsProperties = {
   data: string;
@@ -104,7 +105,9 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
       >
         <AccordionItem value="toc-accordion">
           <AccordionTrigger className="[&>svg]:text-white px-4 hover:no-underline py-2">
-            {title}
+            <div className="flex items-center gap-2">
+              <ScrollProgress className="size-4 text-white" /> {title}
+            </div>
           </AccordionTrigger>
           <AccordionContent className="flex flex-col gap-4 text-balance">
             <ul className="flex list-none flex-col gap-2 text-sm toc max-h-[70vh] overflow-y-auto">
