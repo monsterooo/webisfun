@@ -68,13 +68,15 @@ export default function Writing(props: { params: Params }) {
       <TableOfContents data={blog.content} title={blog.title} />
 
       <div>
-        <Image
-          src={blog.image ?? ""}
-          alt={blog.title}
-          width={1024}
-          height={630}
-          className="max-w-full w-fit mx-auto mb-12"
-        />
+        {blog.detailShowCover && (
+          <Image
+            src={blog.image ?? ""}
+            alt={blog.title}
+            width={1024}
+            height={630}
+            className="max-w-full mx-auto mb-12"
+          />
+        )}
         <div className="prose max-w-fit">
           <MDX code={blog.body} />
         </div>

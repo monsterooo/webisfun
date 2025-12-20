@@ -1,0 +1,62 @@
+---
+title: "CSS 方向判断"
+summary: "使用纯 CSS 来是实现方向判断，在某些特定的场景下很有用。"
+author: "BuildWithZhu"
+publishedAt: "2025-12-20 23:58"
+published: true
+image: "/images/css-direction.png"
+category: "CSS"
+detailShowCover: false
+---
+
+比如我们有些链接鼠标悬浮会上下滚动文字，或者导航左右滑动会左右移动背景，这种情况下面我们就需要使用 CSS 来实现方向判断。
+
+## 判断原理
+
+比如要实现鼠标从上往下和从下往上的判断，CSS 没有提供给我们可以判断鼠标移动方向的快捷方法。
+
+解决的思路是我们需要通过两个元素来接收鼠标的hover从而判断鼠标是从上往下还是从下往上。
+
+```
+|------------|
+|            |
+|      ↓     |
+|            |
+|------------|
+|            |
+|      ↑     |
+|            |
+|------------|
+```
+
+## 方法1
+
+使用两个div元素分别放在容器的上方和下方（超出容器不可见），然后分别为他们的`:before`高度设置为容器的一半用来接收`:hover`事件。当`:before`被hover时将div移入到容器中。
+
+具体的实现方法如下：
+
+<Sandpack
+  codeId="cssDirection1"
+  template="static"
+  options={{ editorHeight: 400 }}
+/>
+
+这种方法是非常好理解的一种方法，他在`hover`和行为表现上都很容易理解。
+
+## 方法2
+
+这种方法实现原理其实和方法1的思想是一样，但是不同的是没有使用 `:before` 来创建元素，而是使用 `clip-path` 来创建一个裁剪层。
+
+裁剪层的关键在于它会至于实际元素的上层，`hover` 相应也是在实际元素之上。所以正是利用这个特性才可以实现正确的 `hover` 判断来实现方向效果。
+
+具体的实现方法如下：
+
+<Sandpack
+  codeId="cssDirection2"
+  template="static"
+  options={{ editorHeight: 400 }}
+/>
+
+## 总结
+
+两种方法都是同样的思想，在实现方面略有差异。你可以根据自己的实际情况选择使用哪种方法。

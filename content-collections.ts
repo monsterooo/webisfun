@@ -28,6 +28,7 @@ const Blog = defineCollection({
     author: z.string(),
     category: z.string(),
     tags: z.array(z.string()).optional(),
+    detailShowCover: z.boolean().default(true),
   }),
   transform: async (document, context) => {
     // console.log("content:", document.content);
