@@ -54,7 +54,7 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
   return (
     <aside
       className={cn(
-        "flex fixed left-0 right-0 top-4 text-white justify-center items-center animate-[slideDown_200ms_ease-out] select-none",
+        "flex fixed z-10 left-0 right-0 top-4 text-white justify-center items-center animate-[slideDown_200ms_ease-out] select-none",
         {
           hidden: !isShow,
         }
