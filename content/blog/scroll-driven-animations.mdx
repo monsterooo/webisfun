@@ -1,13 +1,21 @@
 ---
 title: "Scroll-driven Animations"
-summary: ""
+summary: "以前如果要实现基于滚动条的动画需要使用第三方库，现在CSS原生支持了这个功能，只需要几行代码就可以实现。"
 author: "BuildWithZhu"
 publishedAt: "2025-10-12"
 published: false
-image: ""
-category: ""
+image: "/images/scroll-driven-animations.png"
+category: "CSS"
+detailShowCover: false
 ---
 
-test
+## 什么是滚动驱动动画？
 
-<Sandpack codeId="pageScrollCode" template="static" />
+滚动驱动动画是指可以让我们的动画映射为滚动条的进度而推进的动画，可以将其行为理解为动画第一帧对应滚动开始位置，最后一帧对应滚动结束位置。而中间的帧则 CSS 会自动帮我计算插值。
+
+这与传统的基于时间的动画不同，基于时间的动画有一个时间范围比如：300ms，开始帧对应对应0ms，结束帧对应300ms。而滚动驱动动画则是没有时间范围的，它是基于滚动条的位置来推进动画。
+
+<LineChart
+  className="size-[300px] mx-auto"
+  content="<path d='M55.5 250.5C146.5 157 68.5 60 245 60' stroke='#D82121' stroke-width='5' stroke-linecap='round'/>"
+/>
