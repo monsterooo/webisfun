@@ -11,11 +11,69 @@ detailShowCover: false
 
 ## 什么是滚动驱动动画？
 
-滚动驱动动画是指可以让我们的动画映射为滚动条的进度而推进的动画，可以将其行为理解为动画第一帧对应滚动开始位置，最后一帧对应滚动结束位置。而中间的帧则 CSS 会自动帮我计算插值。
+滚动驱动动画是指可以让我们的动画映射为滚动条的进度而推进的动画(keyframes)，可以将其行为理解为动画第一帧对应滚动开始位置，最后一帧对应滚动结束位置。而中间的帧则 CSS 会自动帮我计算插值。
 
-这与传统的基于时间的动画不同，基于时间的动画有一个时间范围比如：300ms，开始帧对应对应0ms，结束帧对应300ms。而滚动驱动动画则是没有时间范围的，它是基于滚动条的位置来推进动画。
+这与传统的基于时间的动画不同，基于时间的动画有一个时间范围比如：300ms，开始帧对应对应 0ms，结束帧对应 300ms。而滚动驱动动画则是没有时间范围的，它是基于滚动条的位置来推进动画。
 
 <LineChart
   className="size-[300px] mx-auto"
-  content="<path d='M55.5 250.5C146.5 157 68.5 60 245 60' stroke='#D82121' stroke-width='5' stroke-linecap='round'/>"
+  xTitle="滚动距离"
+  yTitle="动画进度"
+  content="<path d='M10 290.5C89.5 216 55 81 211.5 81' stroke='#D82121' stroke-width='5' stroke-linecap='round'/>"
 />
+
+通过使用原生的 CSS 实现可以让我们获取流程的动画效果、无须依赖 JavaScript 或其他第三方库、脱离主线程且是 GPU 加速的动画。常见的使用场景有：网页滚动进度、视差效果、元素渐显/渐隐。
+
+## animation-timeline
+
+`animation-timeline` 属性将动画和时间轴绑定在一起，它可以指定一个或者多个值分别对应的是 `animation` 上的多个动画。常用的两个值是 `scroll()` 和 `view()` 函数。
+
+在 CSS 中我们可以这样使用：
+
+```css
+.box {
+  animation: grow-progress auto linear;
+  animation-timeline: scroll();
+}
+```
+
+在上面的示例代码中，我们为 .box 元素定义了 `animation-timeline: scroll()` 属性，`scroll()` 函数可以给参数，默认情况下等于: `scroll(block)`。意思就是引用它祖先可滚动元素的`滚动轴`。
+
+> 这里的`滚动轴`我是为了更好理解这样写。实际的意思是：在 CSS 的逻辑属性和书写模式（writing-mode）语境中，“块维度”（block dimension）指块级元素（如段落）逐个堆叠的方向。该轴在水平书写模式（horizontal writing modes，如英文或中文横排）中对应垂直方向，在垂直书写模式（vertical writing modes，如传统日文或蒙文竖排）中对应水平方向。
+
+上面的解释有点太书面了，现在我们来实际看一个例子，就明白具体是怎么回事了。
+
+下面的例子在顶部有一个进度条，当我们滚动条在最上面时进度条为0，当我们滚动到最底部时进度条为100。你可以在下面的预览中滚动右边的预览网页查看顶部进度条效果。
+
+<Sandpack
+  codeId="pageScrollCode"
+  template="static"
+  options={{ editorHeight: 600 }}
+/>
+
+在上面示例 CSS 代码中使用的是 `animation-timeline: scroll();` 可以起作用是因为我们的网页有且只有一个滚动条那就是网页根元素(html)的滚动条。如果我们想附加动画的元素父级有多个滚动条但是我们又想绑定到指定的滚动条上，这时我们需要使用自定义滚动条。
+
+```css
+html {
+  scroll-timeline: --page-scroll block;
+}
+#progress {
+  transform-origin: 0 50%;
+  animation: grow-progress auto linear;
+  animation-timeline: --page-scroll;
+}
+```
+
+`scroll-timeline` 属性可以定义一个命名的滚动进度时间线，就像定义一个变量一样。然后我们可以在 `animation-timeline` 属性中引用这个定义的名称 `--page-scroll`。
+
+下面的例子展示了如果有多个滚动进度条的情况，我们可以手动切换将滚动进度绑定到不同的滚动条上。
+
+<Sandpack
+  codeId="scrollRootAndParentCode"
+  template="react"
+  options={{ editorHeight: 600, editorWidthPercentage: 0 }}
+/>
+
+上面例子中，动画所绑定的滚动条默认为父元素。只有当你滚动中间的文字时进度条才会展示。
+
+当点击根元素按钮后，页面进度就绑定为 html 的滚动条，再滚动中间的文字进度条不会产生动画。只有滚动 html 的滚动条时，进度条才会进行动画。这就是`自定义滚动条`和 `scroll-timeline` 的使用方法。
