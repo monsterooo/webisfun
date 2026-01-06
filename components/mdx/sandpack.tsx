@@ -4,6 +4,7 @@ import {
   Sandpack as SandpackAlias,
   SandpackInternal,
 } from "@codesandbox/sandpack-react";
+import { nightOwl } from "@codesandbox/sandpack-themes";
 
 interface SandpackProps extends SandpackInternal {
   codeId?: string;
@@ -24,5 +25,5 @@ export function Sandpack({ codeId, ...props }: SandpackProps) {
     };
   }, [codeFile]);
 
-  return <SandpackAlias {...props} {...overrides} />;
+  return <SandpackAlias theme={nightOwl} {...props} {...overrides} />;
 }
