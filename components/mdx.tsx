@@ -1,4 +1,5 @@
 import { MDXContent } from "@content-collections/mdx/react";
+import { Callout } from "./mdx/callout";
 import { Codepen } from "./mdx/codepen";
 import { LineChart } from "./mdx/line-chart";
 import { Sandpack } from "./mdx/sandpack";
@@ -14,6 +15,7 @@ export async function MDX({
     Codepen,
     Sandpack,
     LineChart,
+    Callout,
   };
   return (
     <article className={className}>
