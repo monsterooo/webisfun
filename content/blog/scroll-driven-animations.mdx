@@ -37,7 +37,9 @@ detailShowCover: false
 }
 ```
 
-在上面的示例代码中，我们为 .box 元素定义了 `animation-timeline: scroll()` 属性，`scroll()` 函数可以给参数，默认情况下等于: `scroll(block)`。意思就是引用它祖先可滚动元素的`滚动轴`。
+### scroll() 函数
+
+在上面的示例代码中，我们为 .box 元素定义了 `animation-timeline: scroll()` 属性，`scroll()` 默认情况下等于: `scroll(block)`。意思就是引用它祖先可滚动元素的`滚动轴`。
 
 > 这里的`滚动轴`我是为了更好理解这样写。实际的意思是：在 CSS 的逻辑属性和书写模式（writing-mode）语境中，“块维度”（block dimension）指块级元素（如段落）逐个堆叠的方向。该轴在水平书写模式（horizontal writing modes，如英文或中文横排）中对应垂直方向，在垂直书写模式（vertical writing modes，如传统日文或蒙文竖排）中对应水平方向。
 
@@ -78,8 +80,32 @@ html {
 
 当点击根元素按钮后，页面进度就绑定为 html 的滚动条，再滚动中间的文字进度条不会产生动画。只有滚动 html 的滚动条时，进度条才会进行动画。这就是**自定义滚动条**和 **scroll-timeline** 的使用方法。
 
-## View() 函数
+### view() 函数
 
 在上面我们了解了 scroll() 函数对于垂直滚动的用法，现在来看看另外一个函数 `view()`。它与 scroll() 不同的是 `view()` 的作用是将元素在其最近的滚动容器中进入视野和离开视野的滚动时间线映射到 animation keyframes 的 from 和 to 上。
 
 举个例子：元素刚达到滚动元素的底部，它就会执行 animation keyframes 的第一个动画帧，并且在滚动到底部的时候就会离开视野。当元素达到滚动元素的顶部时，它就会执行 animation keyframes 最后一个动画帧。
+
+<Sandpack
+  codeId="scrollViewCode1"
+  template="static"
+  options={{ editorHeight: 600 }}
+/>
+
+`view()` 函数如果不设置参数的情况下是元素刚进入滚动元素的视口就开始执行动画，元素完全离开滚动元素的视口结束动画。
+
+如果我们设置一个参数 `view(20%)` 元素会在进入20%后开始执行动画，然后距离结束还差20%的时候停止动画。
+
+如果我们设置两个参数 `view(30% 0)` 元素会在刚进入的时候执行动画，然后在距离结束还差30%的时候停止动画。
+
+除了通过 `view()` 这种方式控制进入和离开之外，我们还可以使用 [animation-range](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/animation-range) 属性更加灵活的控制进入和离开的方式。
+
+`view()` 函数的第一个参数定义滚动视口的起始位置对应滚动元素的顶部，第二个参数定义滚动视口的结束位置对应滚动元素的底部。
+
+<Sandpack
+  codeId="scrollViewCode2"
+  template="static"
+  options={{ editorHeight: 400, editorWidthPercentage: 0 }}
+/>
+
+这里有一个陷进需要注意，如果定义 `view(30% 10%)`，30%是开始内边距也就是滚动顶部，10%是结束内边距也就是滚动底部。一开始我就搞反了，动画老是不对。
