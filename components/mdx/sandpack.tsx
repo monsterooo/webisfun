@@ -25,5 +25,9 @@ export function Sandpack({ codeId, ...props }: SandpackProps) {
     };
   }, [codeFile]);
 
-  return <SandpackAlias theme={nightOwl} {...props} {...overrides} />;
+  return (
+    <div className="my-5">
+      <SandpackAlias theme={nightOwl} {...props} {...overrides} />
+    </div>
+  );
 }

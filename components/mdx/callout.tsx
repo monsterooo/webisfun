@@ -9,7 +9,7 @@ interface CalloutProps {
   type?: "info" | "warn" | "error" | "idea";
 }
 
-const calloutVariants = cva("p-4 [&>p]:my-1 [&>pre]:my-2 rounded-sm", {
+const calloutVariants = cva("p-4 my-5 [&>p]:my-1 [&>pre]:my-2 rounded-sm", {
   variants: {
     type: {
       info: "bg-callout-info-background border-l-4 border-primary",
