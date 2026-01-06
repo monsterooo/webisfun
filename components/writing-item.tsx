@@ -8,7 +8,7 @@ import { formatDate } from "@/lib/date";
 import {
   ArrowRightIcon,
   ArrowRightIconHandle,
-} from "@/components/icons/arrow-right-icon";
+} from "@/components/animation-icons/arrow-right-icon";
 
 interface ItemProps {
   blog: Blog;

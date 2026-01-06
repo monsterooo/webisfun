@@ -77,7 +77,7 @@ export default function Writing(props: { params: Params }) {
             className="max-w-full mx-auto mb-12"
           />
         )}
-        <div className="prose max-w-fit">
+        <div className="prose max-w-full">
           <MDX code={blog.body} />
         </div>
       </div>
