@@ -44,7 +44,10 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --color-callout-background: var(--callout-background);
+  --color-callout-info-background: var(--callout-info-background);
+  --color-callout-warn-background: var(--callout-warn-background);
+  --color-callout-error-background: var(--callout-error-background);
+  --color-callout-idea-background: var(--callout-idea-background);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -107,7 +110,10 @@
   --write-card-background: oklch(0.91 0 0);
 
   /* callout */
-  --callout-background: oklch(0.8617 0.0188 232.55)
+  --callout-info-background: oklch(0.8617 0.0188 232.55);
+  --callout-warn-background: oklch(88.391% 0.02352 75.784);
+  --callout-error-background: oklch(84.76% 0.03179 12.72);
+  --callout-idea-background: oklch(90.08% 0.02081 67.452);
 
   /* 自定义间距 */
   /* --spacing-1: 0.25rem; */
