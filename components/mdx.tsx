@@ -1,5 +1,6 @@
 import { MDXContent } from "@content-collections/mdx/react";
 import { Codepen } from "./mdx/codepen";
+import { LineChart } from "./mdx/line-chart";
 import { Sandpack } from "./mdx/sandpack";
 
 export async function MDX({
@@ -12,6 +13,7 @@ export async function MDX({
   const components = {
     Codepen,
     Sandpack,
+    LineChart,
   };
   return (
     <article className={className}>

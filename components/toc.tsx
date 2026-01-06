@@ -71,16 +71,16 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
           .toc li a {
             overflow: visible;
             position: relative;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 4px;
           }
           .toc li a:target-current {
             color: white;
           }
           .toc li a::before {
             content: '';
-            position: absolute;
-            left: -0.6rem;
-            top: 50%;
-            transform: translateY(-50%);
             width: 6px;
             height: 6px;
             background-color: white;
