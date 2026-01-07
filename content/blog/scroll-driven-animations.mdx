@@ -105,7 +105,7 @@ html {
 <Sandpack
   codeId="scrollViewCode2"
   template="static"
-  options={{ editorHeight: 400, editorWidthPercentage: 0 }}
+  options={{ editorHeight: 600, editorWidthPercentage: 0 }}
 />
 
 <Callout title="注意" type="warn">
@@ -118,11 +118,57 @@ html {
 
 `animation-range` 属性是 `animation-range-start` 和 `animation-range-end` 的简写，它用来定义我们动画在滚动时间轴上的起始和结束位置。可以将我们的动画开始和结束位置进行偏移，从而控制动画的进入和离开时机。
 
+### normal / cover 参数
+
+`animation-range` 的默认参数是 `normal` 等同于 `animation-range: cover` 或者 `animation-range: 0% 100%`，它就是滚动元素的开始和结束位置。在下面我画了一个图展示这种情况：
+
+<img
+  src="/images/range-cover.svg"
+  alt="animation-range-cover"
+  className="w-3/4 mx-auto"
+/>
+
+<Callout title="注意" type="warn">
+  这里有一个注意事项，`animation-range`
+  的开始和结束位置分别对应滚动元素的**底部**和**顶部**，`view()`
+  函数的开始结束位置分别对应滚动元素的**顶部**和**底部**。不知道为什么它们没有统一起来。
+</Callout>
+
+下面实例中你可以滚动右边预览页面看看效果。
+
+<Sandpack
+  codeId="scrollRange1"
+  template="static"
+  options={{ editorHeight: 600 }}
+/>
+
+### contain 参数
+
+表示元素完全进入滚动元素适口内开始动画，并且在开始退出前结束动画。
+
+下图是`animation-range: contain` 的情况：
+
+<img
+  src="/images/range-contain.svg"
+  alt="animation-range-contain"
+  className="w-3/4 mx-auto"
+/>
+
+下面实例中你可以滚动右边预览页面看看效果。
+
+<Sandpack
+  codeId="scrollContain1"
+  template="static"
+  options={{ editorHeight: 600 }}
+/>
+
+### 可视化工具
+
 下面的工具是 [Chrome for Developers](https://scroll-driven-animations.style/#tools) 创建的可视化工具，你可以可视化 `animation-range` 的参数使用，调整它们试试效果。`Output` 对应者的是最终的 CSS 代码
 
 <Sandpack
   codeId="scrollToolViewTimeLine"
   template="static"
   options={{ editorHeight: 700, editorWidthPercentage: 0 }}
-  style={{ marginLeft: -180, marginRight: -180 }}
+  className="-md:mx-[180px]"
 />

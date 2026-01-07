@@ -1767,3 +1767,141 @@ export const scrollToolViewTimeLine = {
   "/index.html": scrollToolViewTimeLineHtml,
   "/shared/styles.css": scrollToolViewTimeLineStyle,
 };
+
+const scrollRange1Html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Example1</title>
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      img {
+        animation: shapeIn linear both;
+        animation-timeline: view();
+        animation-range: normal;
+      }
+      @keyframes shapeIn {
+        from {
+          clip-path: rect(0px 0% 100% 0px round 6px);
+        }
+        to {
+          clip-path: rect(0px 100% 100% 0px round 6px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2>Salmon</h2>
+      <p>Salmon (/ˈsæmən/; pl.: salmon) are any of several commercially important species of euryhaline ray-finned fish from the genera Salmo and Oncorhynchus of the family Salmonidae, native to tributaries of the North Atlantic (Salmo) and North Pacific (Oncorhynchus) basins. Salmon is a colloquial or common name used for fish in this group, but is not a scientific name. Other closely related fish in the same family include trout, char, grayling, whitefish, lenok and taimen, all coldwater fish of the subarctic and cooler temperate regions with some sporadic endorheic populations in Central Asia.</p>
+      <p>Salmon are typically anadromous: they hatch in the shallow gravel beds of freshwater headstreams and spend their juvenile years in rivers, lakes and freshwater wetlands, migrate to the ocean as adults and live like sea fish, then return to their freshwater birthplace to reproduce. However, populations of several species are restricted to fresh waters (i.e. landlocked) throughout their lives. Folklore has it that the fish return to the exact stream where they themselves hatched to spawn, and tracking studies have shown this to be mostly true. A portion of a returning salmon run may stray and spawn in different freshwater systems; the percent of straying depends on the species of salmon.[1] Homing behavior has been shown to depend on olfactory memory.</p>
+      <p>Salmon are important food fish and are intensively farmed in many parts of the world,[4] with Norway being the world's largest producer of farmed salmon, followed by Chile.[5] They are also highly prized game fish for recreational fishing, by both freshwater and saltwater anglers. Many species of salmon have since been introduced and naturalized into non-native environments such as the Great Lakes of North America, Patagonia in South America and South Island of New Zealand</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Salmo_salar.jpg/1599px-Salmo_salar.jpg" />
+      <h2>Name and etymology</h2>
+      <p>The Modern English term salmon is derived from Middle English: samoun, samon and saumon, which in turn are from Anglo-Norman: saumon, from Old French: saumon, and from Latin: salmō (which in turn might have originated from salire, meaning "to leap".[7]). The unpronounced "l" absent from Middle English was later added as a Latinisation to make the word closer to its Latin root. The term salmon has mostly displaced its now dialectal synonym lax, in turn from Middle English: lax, from Old English: leax, from Proto-Germanic: *lahsaz from Proto-Indo-European: *lakso-.</p>
+      <h2>Species</h2>
+      <p>The seven commercially important species of salmon occur in two genera of the subfamily Salmoninae. The genus Salmo contains the Atlantic salmon, found in both sides of the North Atlantic, as well as more than 40 other species commonly named as trout. The genus Oncorhynchus contains 12 recognised species which occur naturally only in the North Pacific, six of which are known as Pacific salmon while the remainder are considered trout. Outside their native habitats, Chinook salmon have been successfully introduced in New Zealand and Patagonia, while coho, sockeye and Atlantic salmon have been established in Patagonia, as well.</p>
+    </div>
+  </body>
+</html>`;
+const scrollRange1Style = `body {
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+h1, h2 {
+  color: #2c3e50;
+  text-align: center;
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 20px auto;
+  border-radius: 6px;
+	border: 1px solid red;
+}
+p {
+  text-align: justify;
+  margin-bottom: 20px;
+}
+`;
+
+export const scrollRange1 = {
+  "/index.html": scrollRange1Html,
+  "/style.css": scrollRange1Style,
+};
+
+const scrollContain1Html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Example1</title>
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      img {
+        animation: shapeIn linear both;
+        animation-timeline: view();
+        animation-range: contain;
+      }
+      @keyframes shapeIn {
+        from {
+          clip-path: rect(0px 0% 100% 0px round 6px);
+        }
+        to {
+          clip-path: rect(0px 100% 100% 0px round 6px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2>Salmon</h2>
+      <p>Salmon (/ˈsæmən/; pl.: salmon) are any of several commercially important species of euryhaline ray-finned fish from the genera Salmo and Oncorhynchus of the family Salmonidae, native to tributaries of the North Atlantic (Salmo) and North Pacific (Oncorhynchus) basins. Salmon is a colloquial or common name used for fish in this group, but is not a scientific name. Other closely related fish in the same family include trout, char, grayling, whitefish, lenok and taimen, all coldwater fish of the subarctic and cooler temperate regions with some sporadic endorheic populations in Central Asia.</p>
+      <p>Salmon are typically anadromous: they hatch in the shallow gravel beds of freshwater headstreams and spend their juvenile years in rivers, lakes and freshwater wetlands, migrate to the ocean as adults and live like sea fish, then return to their freshwater birthplace to reproduce. However, populations of several species are restricted to fresh waters (i.e. landlocked) throughout their lives. Folklore has it that the fish return to the exact stream where they themselves hatched to spawn, and tracking studies have shown this to be mostly true. A portion of a returning salmon run may stray and spawn in different freshwater systems; the percent of straying depends on the species of salmon.[1] Homing behavior has been shown to depend on olfactory memory.</p>
+      <p>Salmon are important food fish and are intensively farmed in many parts of the world,[4] with Norway being the world's largest producer of farmed salmon, followed by Chile.[5] They are also highly prized game fish for recreational fishing, by both freshwater and saltwater anglers. Many species of salmon have since been introduced and naturalized into non-native environments such as the Great Lakes of North America, Patagonia in South America and South Island of New Zealand</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Salmo_salar.jpg/1599px-Salmo_salar.jpg" />
+      <h2>Name and etymology</h2>
+      <p>The Modern English term salmon is derived from Middle English: samoun, samon and saumon, which in turn are from Anglo-Norman: saumon, from Old French: saumon, and from Latin: salmō (which in turn might have originated from salire, meaning "to leap".[7]). The unpronounced "l" absent from Middle English was later added as a Latinisation to make the word closer to its Latin root. The term salmon has mostly displaced its now dialectal synonym lax, in turn from Middle English: lax, from Old English: leax, from Proto-Germanic: *lahsaz from Proto-Indo-European: *lakso-.</p>
+      <h2>Species</h2>
+      <p>The seven commercially important species of salmon occur in two genera of the subfamily Salmoninae. The genus Salmo contains the Atlantic salmon, found in both sides of the North Atlantic, as well as more than 40 other species commonly named as trout. The genus Oncorhynchus contains 12 recognised species which occur naturally only in the North Pacific, six of which are known as Pacific salmon while the remainder are considered trout. Outside their native habitats, Chinook salmon have been successfully introduced in New Zealand and Patagonia, while coho, sockeye and Atlantic salmon have been established in Patagonia, as well.</p>
+    </div>
+  </body>
+</html>`;
+const scrollContain1Style = `body {
+  font-family: "Microsoft YaHei", Arial, sans-serif;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  color: #333;
+}
+h1, h2 {
+  color: #2c3e50;
+  text-align: center;
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 20px auto;
+  border-radius: 6px;
+	border: 1px solid red;
+}
+p {
+  text-align: justify;
+  margin-bottom: 20px;
+}
+`;
+
+export const scrollContain1 = {
+  "/index.html": scrollContain1Html,
+  "/style.css": scrollContain1Style,
+};
