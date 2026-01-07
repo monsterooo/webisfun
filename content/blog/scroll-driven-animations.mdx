@@ -84,7 +84,7 @@ html {
 
 在上面我们了解了 scroll() 函数对于垂直滚动的用法，现在来看看另外一个函数 `view()`。它与 scroll() 不同的是 `view()` 的作用是将元素在其最近的滚动容器中进入视野和离开视野的滚动时间线映射到 animation keyframes 的 from 和 to 上。
 
-举个例子：元素刚达到滚动元素的底部，它就会执行 animation keyframes 的第一个动画帧，并且在滚动到底部的时候就会离开视野。当元素达到滚动元素的顶部时，它就会执行 animation keyframes 最后一个动画帧。
+举个例子：元素刚达到滚动元素的底部，它就会执行 keyframes 的第一个动画帧，并且在滚动到底部的时候就会离开视野。当元素达到滚动元素的顶部时，它就会执行 keyframes 最后一个动画帧。
 
 <Sandpack
   codeId="scrollViewCode1"
@@ -109,7 +109,20 @@ html {
 />
 
 <Callout title="注意" type="warn">
-  这里有一个陷进需要注意，如果定义 `view(30% 10%)`，30% 是 start
+  这里有一个注意事项，如果定义 `view(30% 10%)`，30% 是 start
   内边距也就是滚动顶部，10% 是 end
   内边距也就是滚动底部。我刚学习的时候就搞反了，动画老是不对。
 </Callout>
+
+## animation-range
+
+`animation-range` 属性是 `animation-range-start` 和 `animation-range-end` 的简写，它用来定义我们动画在滚动时间轴上的起始和结束位置。可以将我们的动画开始和结束位置进行偏移，从而控制动画的进入和离开时机。
+
+下面的工具是 [Chrome for Developers](https://scroll-driven-animations.style/#tools) 创建的可视化工具，你可以可视化 `animation-range` 的参数使用，调整它们试试效果。`Output` 对应者的是最终的 CSS 代码
+
+<Sandpack
+  codeId="scrollToolViewTimeLine"
+  template="static"
+  options={{ editorHeight: 700, editorWidthPercentage: 0 }}
+  style={{ marginLeft: -180, marginRight: -180 }}
+/>

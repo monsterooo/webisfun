@@ -32,7 +32,7 @@ export default function Writing(props: { params: Params }) {
     return notFound();
   }
   return (
-    <main className="max-w-5xl mx-auto mt-20">
+    <main className="max-w-4xl mx-auto mt-20">
       <div className="writing-metadata">
         <nav className="text-primary mb-3 text-lg">
           <ol className="flex items-center">
