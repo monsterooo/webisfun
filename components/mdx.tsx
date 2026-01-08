@@ -21,7 +21,9 @@ export async function MDX({
     li: Li,
   };
   return (
-    <article className={cn(className, "prose [&>ul]:list-none [&_ul]:pl-0")}>
+    <article
+      className={cn(className, "max-w-full prose [&>ul]:list-none [&_ul]:pl-0")}
+    >
       <MDXContent code={code} components={components} />
     </article>
   );
