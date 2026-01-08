@@ -1,6 +1,8 @@
 import { MDXContent } from "@content-collections/mdx/react";
+import { cn } from "@/lib/utils";
 import { Callout } from "./mdx/callout";
 import { Codepen } from "./mdx/codepen";
+import { Li } from "./mdx/li";
 import { LineChart } from "./mdx/line-chart";
 import { Sandpack } from "./mdx/sandpack";
 
@@ -16,9 +18,10 @@ export async function MDX({
     Sandpack,
     LineChart,
     Callout,
+    li: Li,
   };
   return (
-    <article className={className}>
+    <article className={cn(className, "prose [&>ul]:list-none [&_ul]:pl-0")}>
       <MDXContent code={code} components={components} />
     </article>
   );

@@ -9,6 +9,25 @@ category: "CSS"
 detailShowCover: false
 ---
 
+在我以前的工作中，如果要实现一个和滚动相关的动画一般情况下都是使用像 [GSAP](https://gsap.com/) 这种第三方 JavaScript 库来完成。无法通过纯 CSS 实现。
+
+使用 JavaScript 来实现我觉得有一些潜在的问题：
+
+- 代码复杂度增加，因为引入的是第三方库每个库都有自己的实现方法。有些可能也不兼容你使用的特定框架
+
+- 动画流可能会卡顿，在基于 JavaScript 中的动画是在主线程执行计算动画，当[主线程繁忙](https://developer.mozilla.org/en-US/docs/Glossary/Jank)时会导致动画卡顿无法达到 60fps
+
+现在新的滚动驱动动画接口已经可以实现在 CSS 中实现滚动动画了，现在一起来认识一下它吧。
+
+<Callout title="目标受众" type="info">
+  这篇博客是为各种经验水平的 Web 开发人员准备的，但是我假设你已经了解了 keyframes 动画基础知识。
+
+如果你对 keyframes 不是特别了解，我有另外一篇文章可以帮助你：
+
+- [Keyframe Animations](https://webisfun.dev/writing/keyframe-animations)
+
+</Callout>
+
 ## 什么是滚动驱动动画？
 
 滚动驱动动画是指可以让我们的动画映射为滚动条的滚动进度而执行 [keyframes](https://webisfun.dev/writing/keyframe-animations) 的动画，可以将其行为理解为动画第一帧对应滚动开始位置，最后一帧对应滚动结束位置。而中间的帧则 CSS 会自动帮我计算插值。
