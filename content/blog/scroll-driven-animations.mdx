@@ -143,6 +143,16 @@ html {
 
 `animation-range` 的默认参数是 `normal` 等同于 `animation-range: cover` 或者 `animation-range: 0% 100%`，它就是滚动元素的开始和结束位置。在下面我画了一个图展示这种情况：
 
+下图是`animation-range: normal` 的情况：
+
+```css
+img {
+  animation: shapeIn linear both;
+  animation-timeline: view();
+  animation-range: normal;
+}
+```
+
 <img
   src="/images/range-cover.svg"
   alt="animation-range-cover"
@@ -169,6 +179,14 @@ html {
 
 下图是`animation-range: contain` 的情况：
 
+```css
+img {
+  animation: shapeIn linear both;
+  animation-timeline: view();
+  animation-range: contain;
+}
+```
+
 <img
   src="/images/range-contain.svg"
   alt="animation-range-contain"
@@ -188,6 +206,14 @@ html {
 如果你想让整个动画（从头到尾）完全跟随元素进入视口的过程。照片第一个像素出现时动画开始，最后一个像素进入视口时动画结束——这就是 `entry` 的用途。
 
 下图是`animation-range: entry` 的情况：
+
+```css
+img {
+  animation: shapeIn linear both;
+  animation-timeline: view();
+  animation-range: entry;
+}
+```
 
 <img
   src="/images/range-entry.svg"
@@ -210,6 +236,14 @@ html {
 如果使用 `entry` 时当元素顶部到达结束位置时就会达到时间线的尽头也就是 100%，并且动画就会立刻结束。如果你使用 `entry-crossing`，只有元素最后一个像素进入适口时才会达到 100%。
 
 下图是`animation-range: entry-crossing` 的情况：
+
+```css
+img {
+  animation: shapeIn linear both;
+  animation-timeline: view();
+  animation-range: entry-crossing;
+}
+```
 
 <img
   src="/images/range-entry-crossing.svg"
@@ -238,7 +272,67 @@ html {
   </div>
 </div>
 
-### 可视化工具
+### exit 参数
+
+`exit` 参数和 `entry` 在概念上是一样的，只是 `entry` 是在元素进入视口时开始动画，而 `exit` 是在元素离开视口时开始动画。
+
+下图是`animation-range: exit` 的情况：
+
+```css
+img {
+  animation: shapeIn linear both;
+  animation-timeline: view();
+  animation-range: exit;
+}
+```
+
+<img
+  src="/images/range-exit.svg"
+  alt="animation-range-entry-crossing"
+  className="w-3/4 mx-auto"
+/>
+
+下面示例你可以滚动右边预览页面看看设置为 `exit` 的效果。
+
+<Sandpack
+  codeId="scrollExit1"
+  template="static"
+  options={{ editorHeight: 600, editorWidthPercentage: 60 }}
+/>
+
+### exit-crossing 参数
+
+`exit-crossing` 参数和 `entry-crossing` 交叉原理相同，当元素高于视口时 0% 会在元素第一个离开视口时开始，100% 会在最后一个像素消失在视口是。
+
+如下图所示：
+
+```css
+img {
+  animation: shapeIn linear both;
+  animation-timeline: view();
+  animation-range: exit-crossing;
+}
+```
+
+<img
+  src="/images/range-exit-crossing.svg"
+  alt="animation-range-entry-crossing"
+  className="w-3/4 mx-auto"
+/>
+
+下面示例你可以滚动右边预览页面看看设置为 `exit-crossing` 的效果。
+
+<Sandpack
+  codeId="scrollExitCorssing1"
+  template="static"
+  options={{ editorHeight: 300, editorWidthPercentage: 60 }}
+/>
+
+## 总结
+
+TODO
+
+## 可视化工具
 
 下面的工具是 [Chrome for Developers](https://scroll-driven-animations.style/#tools) 创建的可视化工具，你可以可视化 `animation-range` 的参数使用，调整它们试试效果。`Output` 对应者的是最终的 CSS 代码
 
