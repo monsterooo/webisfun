@@ -2253,3 +2253,80 @@ export const scrollExitCorssing1 = {
   "/index.html": scrollExitCorssing1Html,
   "/style.css": scrollExitCorssing1Style,
 };
+
+const scrollCardHtml = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Example1</title>
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      /* 设置动画 */
+      .card {
+        animation: stack linear both;
+        animation-timeline: view();
+      }
+      /* 动画关键帧 */
+      @keyframes stack {
+        entry 0% {
+          transform: translateZ(1000px);
+          opacity: 0;
+        }
+        entry 200% {
+          opacity: 0;
+        }
+        exit -200% {
+          opacity: 1;
+        }
+        exit 100% {
+          transform: translateZ(-1000px);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      const container = document.getElementById("container");
+
+      for (let i = 0; i < 200; i++) {
+        const elem = document.createElement("div");
+        elem.classList.add("card");
+        elem.innerText = i;
+        container.appendChild(elem);
+      }
+    </script>
+  </body>
+</html>`;
+const scrollCardStyle = `body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	margin: 0;
+}
+#container {
+  height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  perspective: 1000px;
+  
+}
+.card {
+  width: 300px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #34AADC;
+}
+.card:nth-child(even) {
+  background: #FF9500;
+}`;
+
+export const scrollCard = {
+  "/index.html": scrollCardHtml,
+  "/style.css": scrollCardStyle,
+};

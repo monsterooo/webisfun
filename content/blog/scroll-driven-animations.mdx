@@ -28,6 +28,14 @@ detailShowCover: false
 
 </Callout>
 
+下面使用了 CSS 的动画，无论怎么滚动都非常流畅。
+
+<Sandpack
+  codeId="scrollCard"
+  template="static"
+  options={{ editorHeight: 600, editorWidthPercentage: 60 }}
+/>
+
 ## 什么是滚动驱动动画？
 
 滚动驱动动画是指可以让我们的动画映射为滚动条的滚动进度而执行 [keyframes](https://webisfun.dev/writing/keyframe-animations) 的动画，可以将其行为理解为动画第一帧对应滚动开始位置，最后一帧对应滚动结束位置。而中间的帧则 CSS 会自动帮我计算插值。
