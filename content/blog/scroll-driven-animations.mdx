@@ -3,7 +3,7 @@ title: "Scroll-driven Animations"
 summary: "以前如果要实现基于滚动条的动画需要使用第三方库，现在CSS原生支持了这个功能，只需要几行代码就可以实现。"
 author: "BuildWithZhu"
 publishedAt: "2025-10-12"
-published: false
+published: true
 image: "/images/scroll-driven-animations.png"
 category: "CSS"
 detailShowCover: false
@@ -328,9 +328,7 @@ img {
   options={{ editorHeight: 300, editorWidthPercentage: 60 }}
 />
 
-## 总结
-
-TODO
+`animation-range` 参数基本上就是这些，利用这个参数我们可以灵活的设置元素进入和推出的偏移量这为我们的动画提供了很大的灵活性。
 
 ## 可视化工具
 
@@ -342,3 +340,9 @@ TODO
   options={{ editorHeight: 700, editorWidthPercentage: 0 }}
   className="-md:mx-[180px]"
 />
+
+## 总结
+
+我们首先使用了 `animation-timeline` 属性来定义我们的动画时间轴，然后了解了 `scroll()` 和 `view()` 函数的使用场景。然后可以利用 `scroll-timeline` 来控制基于那个滚动祖先元素做动画，最后详细介绍了 `animation-range` 属性的各种行为。
+
+当遇到拿捏不准的时候可以利用 [Chrome for Developers](https://scroll-driven-animations.style/#tools) 工具去可视化它们，帮助我们生产 CSS 动画基础知识。
