@@ -9,7 +9,12 @@ export const metadata = {
 };
 
 export default function Writing() {
-  const blogs = allBlogs.filter((blog) => blog.published);
+  const blogs = allBlogs
+    .filter((blog) => blog.published)
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    );
 
   return (
     <main className="max-w-4xl mx-auto mt-10 sm:mt-20">

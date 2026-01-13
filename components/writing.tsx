@@ -3,7 +3,10 @@ import { allBlogs } from "@/.content-collections/generated";
 import { groupedByYear } from "@/lib/blog";
 
 export function Writing() {
-  const blogs = groupedByYear(allBlogs.filter((blog) => blog.published));
+  const sortedBlogs = allBlogs
+    .filter((blog) => blog.published)
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+  const blogs = groupedByYear(sortedBlogs);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -14,7 +17,9 @@ export function Writing() {
         </h3>
       </div>
       <div className="col-span-[2] space-y-14">
-        {Object.keys(blogs).map((year) =>
+        {Object.keys(blogs)
+          .sort((a, b) => Number(b) - Number(a))
+          .map((year) =>
           blogs[year].map((blog, index) => (
             <div key={year + index}>
               <p className="font-medium mb-2 tracking-[0.5px] sm:text-lg text-foreground/80">
