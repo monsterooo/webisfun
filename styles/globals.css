@@ -114,19 +114,16 @@
   --callout-warn-background: oklch(92.076% 0.02216 74.015);
   --callout-error-background: oklch(84.76% 0.03179 12.72);
   --callout-idea-background: oklch(90.08% 0.02081 67.452);
-
-  /* 自定义间距 */
-  /* --spacing-1: 0.25rem; */
 }
 
-/* .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.19 0 0);
+.dark {
+  --background: oklch(0.29 0.03 284.11);
+  --foreground: oklch(0.8 0.02 244.86);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  --primary: oklch(0.81 0.07 242.07);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -151,7 +148,13 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-} */
+
+  /* callout */
+  --callout-info-background: oklch(46.004% 0.0538 235.276);
+  --callout-warn-background: oklch(50.655% 0.07019 74.355);
+  --callout-error-background: oklch(44.703% 0.08583 17.066);
+  --callout-idea-background: oklch(51.01% 0.06766 65.296);
+}
 
 @utility container {
   margin-inline: auto;
