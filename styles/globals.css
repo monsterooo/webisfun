@@ -176,15 +176,6 @@
   }
 }
 
-@layer utilities {
-  @keyframes slideDown {
-    from {
-      top: 0
-    }
-  }
-}
-
-
 @layer base {
   body {
     @apply bg-background text-foreground px-8 py-9;
