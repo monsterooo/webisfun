@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeSwitch } from "./theme-switch";
 
 export function Header() {
   return (
@@ -13,6 +14,8 @@ export function Header() {
       </Link>
       <div className="flex justify-center items-center gap-8">
         <Link href="/writing">Writing</Link>
+        <hr className="border-r h-5" />
+        <ThemeSwitch />
       </div>
     </header>
   );
