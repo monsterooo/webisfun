@@ -28,7 +28,7 @@ export function WritingItem({ blog }: ItemProps) {
   return (
     <Link
       href={"/writing/" + blog.slug}
-      className="p-8 bg-write-card-background hover:bg-primary/10 rounded-lg transition-all duration-300 ease-in-out"
+      className="p-8 bg-write-card-background hover:bg-primary/15 rounded-lg transition-all duration-300 ease-in-out"
     >
       <div className="relative h-[200px]">
         <Image
