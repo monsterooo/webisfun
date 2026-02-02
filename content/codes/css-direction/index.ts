@@ -206,3 +206,166 @@ export const cssDirection2 = {
   "/index.html": cssDirection2Html,
   "/style.css": cssDirectionCss2,
 };
+
+const navLinkHtml = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <title>Nav Link</title>
+  </head>
+  <body>
+    <header class="nav">
+      <ul>
+        <li class="nav-item">
+          <div class="nav-extend top">
+            <a href="#">YZA Voku™</a>
+          </div>
+          <div class="nav-extend bottom">
+            <a href="#">Voku Design™</a>
+          </div>
+          <div class="nav-wrapper">
+            <a href="#" class="nav-item-content">Voku.Studio™</a>
+            <div class="nav-director"></div>
+            <div class="nav-line nav-line-left"></div>
+            <div class="nav-line nav-line-right"></div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="nav-wrapper">
+            <a href="#" class="nav-item-content">Blog</a>
+            <div class="nav-director"></div>
+            <div class="nav-line nav-line-left"></div>
+            <div class="nav-line nav-line-right"></div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="nav-wrapper">
+            <a href="#" class="nav-item-content">Project</a>
+            <div class="nav-director"></div>
+            <div class="nav-line nav-line-left"></div>
+            <div class="nav-line nav-line-right"></div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="nav-wrapper">
+            <a href="#" class="nav-item-content">Link</a>
+            <div class="nav-director"></div>
+            <div class="nav-line nav-line-left"></div>
+            <div class="nav-line nav-line-right"></div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="nav-wrapper">
+            <a href="#" class="nav-item-content">About</a>
+            <div class="nav-director"></div>
+            <div class="nav-line nav-line-left"></div>
+            <div class="nav-line nav-line-right"></div>
+          </div>
+        </li>
+      </ul>
+    </header>
+  </body>
+</html>
+`;
+
+const navLinkCss = `* {
+  margin: 0;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@layer {
+  .nav {
+    ul {
+      list-style: none;
+      display: flex;
+      gap: 12px;
+
+      a {
+        color: #383838;
+        text-decoration: none;
+      }
+
+      .nav-wrapper {
+        position: relative;
+        overflow: hidden;
+
+        &:hover:not(:has(.nav-director:hover)) .nav-director {
+          clip-path: inset(0px 100% 0px 0px);
+        }
+
+        &:hover:not(:has(.nav-director:hover)) .nav-line-right {
+          transform: translateX(0%);
+        }
+      }
+    }
+  }
+
+  .nav-item {
+    &:hover .nav-extend {
+      opacity: 1;
+    }
+  }
+
+  .nav-director {
+    position: absolute;
+    inset: -1px;
+    z-index: 30;
+    opacity: 1;
+    clip-path: inset(0px 50% 0px 0px);
+
+    &:hover {
+      clip-path: inset(0px 0px 0px 0px);
+    }
+    &:hover ~ .nav-line-left {
+      transform: translateX(0%);
+    }
+  }
+
+  .nav-line {
+    background: black;
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    bottom: 0;
+    transition: all 300ms ease;
+  }
+
+  .nav-line-left {
+    transform: translateX(-100%);
+  }
+
+  .nav-line-right {
+    transform: translateX(100%);
+  }
+
+  .nav-extend {
+    position: absolute;
+    opacity: 0;
+    transition: all 300ms linear;
+
+    a {
+      color: #9d9999 !important;
+    }
+
+    &.top {
+      transform: translateY(-130%);
+    }
+
+    &.bottom {
+      transform: translateY(130%);
+    }
+  }
+}`;
+
+export const navLink = {
+  "/index.html": navLinkHtml,
+  "/style.css": navLinkCss,
+};
