@@ -5,12 +5,14 @@ import {
   SandpackInternal,
 } from "@codesandbox/sandpack-react";
 import { nightOwl } from "@codesandbox/sandpack-themes";
+import { cn } from "@/lib/utils";
 
 interface SandpackProps extends SandpackInternal {
+  wrapClassName?: string;
   codeId?: string;
 }
 
-export function Sandpack({ codeId, ...props }: SandpackProps) {
+export function Sandpack({ codeId, wrapClassName, ...props }: SandpackProps) {
   const codeFile = useMemo(() => {
     if (!codeId) return null;
     return codeFiles?.[codeId as keyof typeof codeFiles];
@@ -19,14 +21,12 @@ export function Sandpack({ codeId, ...props }: SandpackProps) {
   const overrides = useMemo(() => {
     if (!codeFile) return {};
     return {
-      files: {
-        ...codeFile,
-      },
+      files: codeFile,
     };
   }, [codeFile]);
 
   return (
-    <div className="my-5">
+    <div className={cn("my-5", wrapClassName)}>
       <SandpackAlias theme={nightOwl} {...props} {...overrides} />
     </div>
   );
