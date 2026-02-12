@@ -15,6 +15,7 @@ export function Header() {
       </Link>
       <div className="flex justify-center items-center gap-8">
         <Link href="/writing">Writing</Link>
+        <Link href="/snippet">Snippet</Link>
         <hr className="border-r h-5" />
         <ThemeSwitch />
       </div>
