@@ -26,10 +26,13 @@ export async function MDX({
     <article
       className={cn(
         className,
-        "max-w-full prose dark:prose-invert [&>ul]:list-none [&_ul]:pl-0"
+        "prose dark:prose-invert [&_ul]:list-none [&_ul]:pl-0 grid blog-wrapper"
       )}
     >
-      <MDXContent code={code} components={components} />
+      {/* 这里暂时不想修改内部样式，通过添加一层div来触发折叠margin */}
+      <div>
+        <MDXContent code={code} components={components} />
+      </div>
     </article>
   );
 }

@@ -180,10 +180,25 @@
       @apply hidden;
     }
   }
+
+  .blog-wrapper {
+    max-width: unset !important;
+    grid-template-columns: 1fr min(calc(64rem - var(--viewport-padding) * 2), calc(100% - var(--viewport-padding) * 2)) 1fr;
+    padding-inline: 0;
+    /* padding-inline: var(--viewport-padding); */
+    grid-column-gap: var(--viewport-padding);
+
+    > * {
+      grid-column: 2;
+    }
+  }
 }
 
 @layer base {
   body {
-    @apply bg-background text-foreground px-8 py-9;
+    /*  px-8 py-9 */
+    @apply bg-background text-foreground;
+    /* 这里还需要添加对于移动端的适配 */
+    --viewport-padding: 32px;
   }
 }
