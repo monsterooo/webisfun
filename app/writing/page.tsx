@@ -17,7 +17,7 @@ export default function Writing() {
     );
 
   return (
-    <main className="max-w-4xl mx-auto mt-10 sm:mt-20">
+    <main className="max-w-4xl mx-auto md:px-9 px-4 mt-10 sm:mt-20">
       <h1 className="font-plantin text-[56px] leading-[1.2]">Writing</h1>
       <p className="text-lg leading-[1.6]">
         Uncover, record, and share the most intriguing and fun ideas from the

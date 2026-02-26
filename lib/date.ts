@@ -7,7 +7,7 @@ interface FormatDateProps {
 
 export function formatDate({
   date,
-  formatStr = "MMMM d, yyyy",
+  formatStr = "yyyy-MM-dd",
 }: FormatDateProps) {
   if (!date) {
     return "";

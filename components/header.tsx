@@ -3,7 +3,7 @@ import { ThemeSwitch } from "./theme-switch";
 
 export function Header() {
   return (
-    <header className="max-w-5xl mx-auto flex justify-between h-12">
+    <header className="max-w-4xl w-full mx-auto flex justify-between h-12 md:px-9 px-4">
       <Link href="/" className="flex justify-center items-center gap-2">
         {/* <div className="size-6 bg-primary text-white rounded-full text-sm flex justify-center items-center">
           W

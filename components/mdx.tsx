@@ -1,5 +1,6 @@
 import { MDXContent } from "@content-collections/mdx/react";
 import { cn } from "@/lib/utils";
+import { Bleed } from "./mdx/bleed";
 import { Callout } from "./mdx/callout";
 import { Codepen } from "./mdx/codepen";
 import { Li } from "./mdx/li";
@@ -21,12 +22,13 @@ export async function MDX({
     LineChart,
     Callout,
     SVGRender,
+    Bleed,
   };
   return (
     <article
       className={cn(
         className,
-        "max-w-full prose dark:prose-invert [&>ul]:list-none [&_ul]:pl-0"
+        "prose dark:prose-invert [&_ul]:list-none [&_ul]:pl-0 grid blog-wrapper [&_p]:mb-0"
       )}
     >
       <MDXContent code={code} components={components} />

@@ -3,7 +3,7 @@ import { SandpackCustom } from "@/components/sandpack-custom";
 
 export default function Snippet() {
   return (
-    <main className="max-w-4xl mx-auto mt-10 sm:mt-20">
+    <main className="max-w-4xl mx-auto md:px-9 px-4 mt-10 sm:mt-20">
       <h1 className="font-plantin text-[56px] leading-[1.2]">Snippet</h1>
       <p className="text-lg leading-[1.6]">
         Here&apos;s a code snippet — hope it&apos;s helpful!

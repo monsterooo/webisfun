@@ -1,6 +1,5 @@
 import { use } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { allBlogs } from "@/.content-collections/generated";
 import { formatDate } from "@/lib/date";
@@ -32,29 +31,8 @@ export default function Writing(props: { params: Params }) {
     return notFound();
   }
   return (
-    <main className="max-w-4xl mx-auto mt-20">
-      <div className="writing-metadata">
-        <nav className="text-primary mb-3 text-lg">
-          <ol className="flex items-center">
-            <li>
-              <Link
-                href="/"
-                className="hover:decoration-primary underline decoration-transparent transition text-primary underline-offset-2"
-              >
-                Home
-              </Link>
-              <span className="mx-2 text-foreground">/</span>
-            </li>
-            <li>
-              <Link
-                href="/writing"
-                className="hover:decoration-primary underline decoration-transparent transition text-primary underline-offset-2"
-              >
-                Writing
-              </Link>
-            </li>
-          </ol>
-        </nav>
+    <main className="mt-20">
+      <div className="writing-metadata max-w-4xl mx-auto md:px-9 px-4 mb-10">
         <h1 className="font-plantin text-5xl sm:text-[52px] leading-[1.2] text-foreground">
           {blog.title}
         </h1>
