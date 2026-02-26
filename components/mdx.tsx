@@ -1,5 +1,6 @@
 import { MDXContent } from "@content-collections/mdx/react";
 import { cn } from "@/lib/utils";
+import { Bleed } from "./mdx/bleed";
 import { Callout } from "./mdx/callout";
 import { Codepen } from "./mdx/codepen";
 import { Li } from "./mdx/li";
@@ -21,18 +22,16 @@ export async function MDX({
     LineChart,
     Callout,
     SVGRender,
+    Bleed,
   };
   return (
     <article
       className={cn(
         className,
-        "prose dark:prose-invert [&_ul]:list-none [&_ul]:pl-0 grid blog-wrapper"
+        "prose dark:prose-invert [&_ul]:list-none [&_ul]:pl-0 grid blog-wrapper [&_p]:mb-0"
       )}
     >
-      {/* 这里暂时不想修改内部样式，通过添加一层div来触发折叠margin */}
-      <div>
-        <MDXContent code={code} components={components} />
-      </div>
+      <MDXContent code={code} components={components} />
     </article>
   );
 }
