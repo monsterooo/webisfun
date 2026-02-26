@@ -1,5 +1,6 @@
 import { MDXContent } from "@content-collections/mdx/react";
 import { cn } from "@/lib/utils";
+import { AngleVisual } from "./contents/angle-visual";
 import { Bleed } from "./mdx/bleed";
 import { Callout } from "./mdx/callout";
 import { Codepen } from "./mdx/codepen";
@@ -23,6 +24,8 @@ export async function MDX({
     Callout,
     SVGRender,
     Bleed,
+    // 内容组件
+    AngleVisual,
   };
   return (
     <article

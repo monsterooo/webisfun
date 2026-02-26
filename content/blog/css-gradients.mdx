@@ -11,4 +11,21 @@ detailShowCover: false
 
 渐变是现代前端开发中使用频率很高的属性，原本需要导出图片才能实现的效果通过渐变我们只需几行代码即可实现。且其扩展性比图片强很多。
 
+CSS 渐变的本质是颜色的插值——在两个或多个颜色之间，按照特定规则生成平滑过渡。浏览器不需要图片，只需一行 CSS，就能绘制出无限分辨率的渐变效果。
+
 不仅如此，利用渐变属性我们也可以通过 JavaScript 来实现动态的渐变效果。
+
+## 线性渐变 (linear-gradient)
+
+`linear-gradient` 沿一条直线轴过渡颜色。轴的方向由角度决定：0deg 从下到上，90deg 从左到右，180deg 从上到下。
+
+```css
+.element {
+  /* 角度定义方法 */
+  background: linear-gradient(angle, color1, color2, ...);
+  /* 也可以用方向关键词 */
+  background: linear-gradient(to right, #e63946, #2a9d8f);
+}
+```
+
+<AngleVisual />
