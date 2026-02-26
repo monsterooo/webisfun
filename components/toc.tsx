@@ -40,7 +40,7 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
       };
 
   useMotionValueEvent(scroll.scrollY, "change", (latest) => {
-    if (latest >= 160) {
+    if (latest >= 100) {
       setOpenToc(true);
     } else {
       setAccordionOpen("");
@@ -121,7 +121,7 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
           <Accordion
             ref={accordionRef}
             className={cn(
-              "bg-primary/30 rounded-2xl transition-all ease-in-out duration-300 backdrop-saturate-[1.15] backdrop-blur-[12px]"
+              "bg-primary rounded-2xl transition-all ease-in-out duration-300"
             )}
             type="single"
             collapsible

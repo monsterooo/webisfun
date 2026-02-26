@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { allBlogs } from "@/.content-collections/generated";
 import { formatDate } from "@/lib/date";
+import { HR } from "@/components/hr";
 import { MDX } from "@/components/mdx";
 import { TableOfContents } from "@/components/toc";
 
@@ -31,28 +32,7 @@ export default function Writing(props: { params: Params }) {
   }
   return (
     <main className="mt-20">
-      <div className="writing-metadata max-w-5xl mx-auto md:px-9 px-4 mb-10">
-        {/* <nav className="text-primary mb-3 text-lg">
-          <ol className="flex items-center">
-            <li>
-              <Link
-                href="/"
-                className="hover:decoration-primary underline decoration-transparent transition text-primary underline-offset-2"
-              >
-                Home
-              </Link>
-              <span className="mx-2 text-foreground">/</span>
-            </li>
-            <li>
-              <Link
-                href="/writing"
-                className="hover:decoration-primary underline decoration-transparent transition text-primary underline-offset-2"
-              >
-                Writing
-              </Link>
-            </li>
-          </ol>
-        </nav> */}
+      <div className="writing-metadata max-w-4xl mx-auto md:px-9 px-4 mb-10">
         <h1 className="font-plantin text-5xl sm:text-[52px] leading-[1.2] text-foreground">
           {blog.title}
         </h1>
@@ -60,6 +40,7 @@ export default function Writing(props: { params: Params }) {
         <p className="mt-4 text-sm text-foreground/70">
           {formatDate({ date: new Date(blog.publishedAt) })}
         </p>
+        <HR className="my-8" />
       </div>
 
       <TableOfContents data={blog.content} title={blog.title} />

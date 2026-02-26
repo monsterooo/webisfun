@@ -183,7 +183,7 @@
 
   .blog-wrapper {
     max-width: unset !important;
-    grid-template-columns: 1fr min(calc(64rem - var(--viewport-padding) * 2), calc(100% - var(--viewport-padding) * 2)) 1fr;
+    grid-template-columns: 1fr min(calc(var(--container-4xl) - var(--viewport-padding) * 2), calc(100% - var(--viewport-padding) * 2)) 1fr;
     padding-inline: 0;
     grid-column-gap: var(--viewport-padding);
 
