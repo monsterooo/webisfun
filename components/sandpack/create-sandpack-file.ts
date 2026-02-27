@@ -1,13 +1,10 @@
 import { HTMLAttributes, PropsWithChildren, ReactElement } from "react";
 import type { SandpackFile } from "@codesandbox/sandpack-react/unstyled";
 
-export const AppJSPath = `/src/App.js`;
-export const StylesCSSPath = `/src/styles.css`;
+export const AppJSPath = `/App.js`;
+export const StylesCSSPath = `/styles.css`;
 export const SUPPORTED_FILES = [AppJSPath, StylesCSSPath];
 
-/**
- * Tokenize meta attributes while ignoring brace-wrapped metadata (e.g. {expectedErrors: …}).
- */
 function splitMeta(meta: string): string[] {
   const tokens: string[] = [];
   let current = "";
@@ -69,8 +66,8 @@ export function createSandpackFile(
   elements: ReactElement[]
 ): Record<string, SandpackFile> {
   return elements.reduce(
-    (result: Record<string, SandpackFile>, element: ReactElement) => {
-      if (element.type !== "pre") {
+    (result: Record<string, SandpackFile>, element: any) => {
+      if (element.type.mdxName !== "pre" && element.type !== "pre") {
         return result;
       }
       const { props } = (
