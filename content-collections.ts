@@ -1,19 +1,7 @@
 import { defineCollection, defineConfig } from "@content-collections/core";
 import { compileMDX } from "@content-collections/mdx";
-import {
-  rehypeCode,
-  RehypeCodeOptions,
-  rehypeToc,
-  remarkGfm,
-  remarkHeading,
-} from "fumadocs-core/mdx-plugins";
-
-const rehypeCodeOptions: RehypeCodeOptions = {
-  themes: {
-    light: "github-dark",
-    dark: "github-dark",
-  },
-};
+import { rehypeToc, remarkGfm, remarkHeading } from "fumadocs-core/mdx-plugins";
+import { visit } from "unist-util-visit";
 
 const Blog = defineCollection({
   name: "Blog",
@@ -31,12 +19,20 @@ const Blog = defineCollection({
     detailShowCover: z.boolean().default(true),
   }),
   transform: async (document, context) => {
-    // console.log("content:", document.content);
-    // const toc = getTableOfContents(document.content);
-    // console.log("toc:", toc);
     const body = await compileMDX(context, document, {
       remarkPlugins: [remarkGfm, remarkHeading],
-      rehypePlugins: [rehypeToc, [rehypeCode, rehypeCodeOptions]],
+      rehypePlugins: [
+        rehypeToc,
+        function rehypeMetaAsAttributes() {
+          return (tree) => {
+            visit(tree, "element", (node) => {
+              if (node.tagName === "code" && node.data && node.data.meta) {
+                node.properties.meta = node.data.meta;
+              }
+            });
+          };
+        },
+      ],
     });
 
     return {

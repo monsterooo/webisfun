@@ -9,27 +9,80 @@ category: ""
 detailShowCover: false
 ---
 
-test
+```tsx
+"use client";
 
-<Bleed style={{ "--max-width": "100%", "--horizontal-padding": "0" }}>
-  <img src="https://plus.unsplash.com/premium_photo-1771589559652-5db731a039ea?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-</Bleed>
+import { useTheme } from "next-themes";
+import { MoonStarIcon } from "./animation-icons/moon-star-icon";
+import { SumDimIcon } from "./animation-icons/sun-dim-icon";
 
-<Callout title="CVAS" type="idea">
+export function ThemeSwitch() {
+  const { resolvedTheme, setTheme } = useTheme();
 
-Extracting Variant Types
+  const handleChangeTheme = () => {
+    setTheme(resolvedTheme === "light" ? "dark" : "light");
+  };
 
-cva offers the VariantProps helper to extract variant types
-
-```css
-.box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  return (
+    <div onClick={handleChangeTheme}>
+      {resolvedTheme === "light" ? (
+        <SumDimIcon className="cursor-pointer" />
+      ) : (
+        <MoonStarIcon className="cursor-pointer" />
+      )}
+    </div>
+  );
 }
 ```
 
-cva offers the VariantProps helper to extract variant types
+```css
+@layer components {
+  .blog-wrapper {
+    max-width: unset !important;
+    grid-template-columns:
+      1fr min(
+        calc(var(--container-4xl) - var(--viewport-padding) * 2),
+        calc(100% - var(--viewport-padding) * 2)
+      )
+      1fr;
+    padding-inline: 0;
+    grid-column-gap: var(--viewport-padding);
 
-</Callout>
+    > * {
+      grid-column: 2;
+    }
+  }
+
+  .bleed {
+    width: 100%;
+    max-width: var(--max-width, 68.75rem);
+    grid-column: 1 / -1;
+    padding-inline: var(--horizontal-padding, var(--viewport-padding));
+    margin-inline: auto;
+  }
+}
+```
+
+<Sandpack template="react">
+
+```js
+import Gallery from "./Gallery.js";
+
+export default function App() {
+  return <Gallery />;
+}
+```
+
+```js Gallery.js
+export default function Gallery() {
+  return <h1>Gallery</h1>;
+}
+```
+
+```css
+h1 {
+  color: purple;
+}
+```
+
+</Sandpack>

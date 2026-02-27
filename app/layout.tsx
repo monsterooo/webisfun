@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import "@/styles/globals.css";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
+import { SandPackCSS } from "@/components/sandpack/sandpack-styles";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <SandPackCSS />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${plantin.variable} antialiased font-geist`}
       >

@@ -2,28 +2,34 @@ import { MDXContent } from "@content-collections/mdx/react";
 import { cn } from "@/lib/utils";
 import { Bleed } from "./mdx/bleed";
 import { Callout } from "./mdx/callout";
+import { CodeBlock } from "./mdx/code-block";
 import { Codepen } from "./mdx/codepen";
 import { Li } from "./mdx/li";
 import { LineChart } from "./mdx/line-chart";
-import { Sandpack } from "./mdx/sandpack";
+import { SandpackLegacy } from "./mdx/sandpack-legacy";
 import { SVGRender } from "./mdx/svg-render";
+import { Sandpack } from "./sandpack";
 
-export async function MDX({
-  code,
-  className,
-}: {
-  code: string;
-  className?: string;
-}) {
-  const components = {
-    li: Li,
-    Codepen,
-    Sandpack,
-    LineChart,
-    Callout,
-    SVGRender,
-    Bleed,
-  };
+const components = {
+  li: Li,
+  pre: CodeBlock,
+  Codepen,
+  Sandpack,
+  SandpackLegacy,
+  LineChart,
+  Callout,
+  SVGRender,
+  Bleed,
+};
+
+for (const key in components) {
+  if (components.hasOwnProperty(key)) {
+    const MDXComponent: any = (components as any)[key];
+    MDXComponent.mdxName = key;
+  }
+}
+
+export function MDX({ code, className }: { code: string; className?: string }) {
   return (
     <article
       className={cn(
