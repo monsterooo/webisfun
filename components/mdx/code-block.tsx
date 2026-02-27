@@ -12,7 +12,7 @@ interface CodeBlockProps {
 
 export async function CodeBlock({
   children: {
-    props: { className, children },
+    props: { className = "", children },
   },
 }: CodeBlockProps) {
   const lang = className.replace("language-", "");
