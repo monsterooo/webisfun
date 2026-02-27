@@ -30,7 +30,7 @@ detailShowCover: false
 
 下面使用了 CSS 的动画，无论怎么滚动都非常流畅。
 
-<Sandpack
+<SandpackLegacy
   codeId="scrollCard"
   template="static"
   options={{ editorHeight: 600, editorWidthPercentage: 60 }}
@@ -76,7 +76,7 @@ detailShowCover: false
 
 下面的例子在顶部有一个进度条，当我们滚动条在最上面时进度条为0，当我们滚动到最底部时进度条为100。你可以在下面的预览中滚动右边的预览网页查看顶部进度条效果。
 
-<Sandpack
+<SandpackLegacy
   codeId="pageScrollCode"
   template="static"
   options={{ editorHeight: 600, editorWidthPercentage: 60 }}
@@ -99,7 +99,7 @@ html {
 
 下面的例子展示了如果有多个滚动进度条的情况，我们可以手动切换将滚动进度绑定到不同的滚动条上。
 
-<Sandpack
+<SandpackLegacy
   codeId="scrollRootAndParentCode"
   template="react"
   options={{ editorHeight: 600, editorWidthPercentage: 0 }}
@@ -115,7 +115,7 @@ html {
 
 举个例子：元素刚达到滚动元素的底部，它就会执行 keyframes 的第一个动画帧，并且在滚动到底部的时候就会离开视野。当元素达到滚动元素的顶部时，它就会执行 keyframes 最后一个动画帧。
 
-<Sandpack
+<SandpackLegacy
   codeId="scrollViewCode1"
   template="static"
   options={{ editorHeight: 600, editorWidthPercentage: 60 }}
@@ -131,7 +131,7 @@ html {
 
 `view()` 函数的第一个参数定义滚动视口的起始位置对应滚动元素的顶部，第二个参数定义滚动视口的结束位置对应滚动元素的底部。
 
-<Sandpack
+<SandpackLegacy
   codeId="scrollViewCode2"
   template="static"
   options={{ editorHeight: 600, editorWidthPercentage: 0 }}
@@ -252,7 +252,7 @@ img {
 
 下面实例中你可以滚动右边预览页面看看效果。
 
-<Sandpack
+<SandpackLegacy
   codeId="scrollRange1"
   template="static"
   options={{ editorHeight: 600, editorWidthPercentage: 60 }}
@@ -331,7 +331,7 @@ img {
 
 下面示例你可以滚动右边预览页面看看设置为 `contain` 的效果。
 
-<Sandpack
+<SandpackLegacy
   codeId="scrollContain1"
   template="static"
   options={{ editorHeight: 600, editorWidthPercentage: 60 }}
@@ -384,7 +384,7 @@ img {
 
 下面示例你可以滚动右边预览页面看看设置为 `entry` 的效果。
 
-<Sandpack
+<SandpackLegacy
   codeId="scrollEntry1"
   template="static"
   options={{ editorHeight: 600, editorWidthPercentage: 60 }}
@@ -449,7 +449,7 @@ img {
 
 <div className="grid max-w-full grid-cols-2 gap-4">
   <div>
-    <Sandpack
+    <SandpackLegacy
       codeId="scrollEntryCorssing1"
       template="static"
       options={{ editorHeight: 300, editorWidthPercentage: 0 }}
@@ -457,7 +457,7 @@ img {
     <p className="text-center">animation-range: entry</p>
   </div>
   <div>
-    <Sandpack
+    <SandpackLegacy
       codeId="scrollEntryCorssing2"
       template="static"
       options={{ editorHeight: 300, editorWidthPercentage: 0 }}
@@ -513,7 +513,7 @@ img {
 
 下面示例你可以滚动右边预览页面看看设置为 `exit` 的效果。
 
-<Sandpack
+<SandpackLegacy
   codeId="scrollExit1"
   template="static"
   options={{ editorHeight: 600, editorWidthPercentage: 60 }}
@@ -574,7 +574,7 @@ img {
 
 下面示例你可以滚动右边预览页面看看设置为 `exit-crossing` 的效果。
 
-<Sandpack
+<SandpackLegacy
   codeId="scrollExitCorssing1"
   template="static"
   options={{ editorHeight: 300, editorWidthPercentage: 60 }}
@@ -586,7 +586,7 @@ img {
 
 下面的工具是 [Chrome for Developers](https://scroll-driven-animations.style/#tools) 创建的可视化工具，你可以可视化 `animation-range` 的参数使用，调整它们试试效果。`Output` 对应者的是最终的 CSS 代码
 
-<Sandpack
+<SandpackLegacy
   codeId="scrollToolViewTimeLine"
   template="static"
   options={{ editorHeight: 700, editorWidthPercentage: 0 }}

@@ -43,9 +43,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${plantin.variable} antialiased font-geist`}
       >
         <ThemeProvider attribute="class">
-          <Header />
+          {/* <Header /> */}
           {children}
-          <Footer />
+          {/* <Footer /> */}
         </ThemeProvider>
       </body>
     </html>

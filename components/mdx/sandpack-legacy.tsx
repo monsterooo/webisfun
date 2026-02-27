@@ -12,7 +12,11 @@ interface SandpackProps extends SandpackInternal {
   codeId?: string;
 }
 
-export function Sandpack({ codeId, wrapClassName, ...props }: SandpackProps) {
+export function SandpackLegacy({
+  codeId,
+  wrapClassName,
+  ...props
+}: SandpackProps) {
   const codeFile = useMemo(() => {
     if (!codeId) return null;
     return codeFiles?.[codeId as keyof typeof codeFiles];

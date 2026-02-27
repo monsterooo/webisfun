@@ -5,8 +5,9 @@ import { Callout } from "./mdx/callout";
 import { Codepen } from "./mdx/codepen";
 import { Li } from "./mdx/li";
 import { LineChart } from "./mdx/line-chart";
-import { Sandpack } from "./mdx/sandpack";
+import { SandpackLegacy } from "./mdx/sandpack-legacy";
 import { SVGRender } from "./mdx/svg-render";
+import { Sandpack } from "./sandpack";
 
 export async function MDX({
   code,
@@ -19,6 +20,7 @@ export async function MDX({
     li: Li,
     Codepen,
     Sandpack,
+    SandpackLegacy,
     LineChart,
     Callout,
     SVGRender,
