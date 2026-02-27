@@ -32,7 +32,7 @@ export default function Writing(props: { params: Params }) {
   }
   return (
     <main className="mt-20">
-      {/* <div className="writing-metadata max-w-4xl mx-auto md:px-9 px-4 mb-10">
+      <div className="writing-metadata max-w-4xl mx-auto md:px-9 px-4 mb-10">
         <h1 className="font-plantin text-5xl sm:text-[52px] leading-[1.2] text-foreground">
           {blog.title}
         </h1>
@@ -41,7 +41,7 @@ export default function Writing(props: { params: Params }) {
           {formatDate({ date: new Date(blog.publishedAt) })}
         </p>
         <HR className="my-8" />
-      </div> */}
+      </div>
 
       <TableOfContents data={blog.content} title={blog.title} />
 

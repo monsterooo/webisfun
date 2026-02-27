@@ -3,9 +3,9 @@ import {
   Sandpack as SandpackAlias,
   SandpackInternal,
 } from "@codesandbox/sandpack-react";
-import { nightOwl } from "@codesandbox/sandpack-themes";
 import { cn } from "@/lib/utils";
 import { createSandpackFile } from "./create-sandpack-file";
+import { darkTheme } from "./theme";
 
 interface SandpackProps extends SandpackInternal {
   children: ReactElement;
@@ -26,7 +26,8 @@ export function Sandpack({ wrapClassName, ...props }: SandpackProps) {
 
   return (
     <div className={cn("my-5", wrapClassName)}>
-      <SandpackAlias theme={nightOwl} {...props} {...overrides} />
+      {/* TODO: 这里的theme暂时使用固定dark，后续可以根据用户主题自动切换 */}
+      <SandpackAlias theme={darkTheme} {...props} {...overrides} />
     </div>
   );
 }

@@ -29,13 +29,7 @@ for (const key in components) {
   }
 }
 
-export async function MDX({
-  code,
-  className,
-}: {
-  code: string;
-  className?: string;
-}) {
+export function MDX({ code, className }: { code: string; className?: string }) {
   return (
     <article
       className={cn(
