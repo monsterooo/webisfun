@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "../ui/input";
 import { Slider } from "../ui/slider";
 
 function toRadians(degrees: number) {
@@ -175,12 +176,12 @@ export function AngleVisual() {
         </div>
         <div className="border-t border-gray-200 px-7 py-6">
           <Form {...form}>
-            <form className="space-y-4">
+            <form className="space-y-4 flex items-center gap-2">
               <FormField
                 control={form.control}
                 name="angle"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-28">
                     <FormLabel>角度</FormLabel>
                     <FormControl>
                       <Slider
@@ -189,6 +190,32 @@ export function AngleVisual() {
                         max={360}
                         step={1}
                       />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="color1"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>起始色</FormLabel>
+                    <FormControl>
+                      <Input type="color" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="color2"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>结束色</FormLabel>
+                    <FormControl>
+                      <Input type="color" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
