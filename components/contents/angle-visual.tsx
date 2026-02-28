@@ -184,7 +184,7 @@ export function AngleVisual() {
       });
       setCodeHtml(code);
     },
-    1000,
+    500,
     [codeValue]
   );
 

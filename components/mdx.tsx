@@ -1,6 +1,7 @@
 import { MDXContent } from "@content-collections/mdx/react";
 import { cn } from "@/lib/utils";
 import { AngleVisual } from "./contents/angle-visual";
+import { GradientHardEdge } from "./contents/gradient-hard-edge";
 import { Bleed } from "./mdx/bleed";
 import { Callout } from "./mdx/callout";
 import { CodeBlock } from "./mdx/code-block";
@@ -23,6 +24,7 @@ const components = {
   Bleed,
   // 内容组件
   AngleVisual,
+  GradientHardEdge,
 };
 
 for (const key in components) {
@@ -37,7 +39,7 @@ export function MDX({ code, className }: { code: string; className?: string }) {
     <article
       className={cn(
         className,
-        "prose dark:prose-invert [&_ul]:list-none [&_ul]:pl-0 grid blog-wrapper [&_p]:mb-0"
+        "prose dark:prose-invert [&_ul]:list-none [&_ul]:pl-0 grid blog-wrapper [&_p]:mt-0"
       )}
     >
       <MDXContent code={code} components={components} />
