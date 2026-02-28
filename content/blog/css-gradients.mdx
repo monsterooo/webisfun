@@ -21,11 +21,15 @@ CSS 渐变的本质是颜色的插值——在两个或多个颜色之间，按�
 
 ```css
 .element {
-  /* 角度定义方法 */
-  background: linear-gradient(angle, color1, color2, ...);
-  /* 也可以用方向关键词 */
-  background: linear-gradient(to right, #e63946, #2a9d8f);
+  /* 角度定义方法, 从红色渐变到蓝色 */
+  background: linear-gradient(180deg, red, blue);
+  /* 也可以用方向关键词, 从左边到右边 */
+  background: linear-gradient(to right, red, blue);
+  /* 红色渐变到20%的位置，剩余是蓝色的渐变 */
+  background: linear-gradient(90deg, red, 20%, blue);
 }
 ```
+
+可以尝试更改下面的可视化工具，来观察线性渐变角度和颜色。
 
 <AngleVisual />

@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import { useDebounce } from "react-use";
+import { codeToHtml } from "shiki";
 import * as z from "zod";
 import {
   Form,
@@ -61,8 +63,8 @@ export function AngleDirection({
     const endY = cy + Math.sin(mathAngle) * r;
     const startX = cx - Math.cos(mathAngle) * r;
     const startY = cy - Math.sin(mathAngle) * r;
-    const perpAngle = mathAngle + Math.PI / 2; // 垂直角度
-    const perpLen = 50;
+    // const perpAngle = mathAngle + Math.PI / 2; // 垂直角度
+    // const perpLen = 50;
 
     // 圆边框
     ctx.strokeStyle = "#d4cfc4";
@@ -98,27 +100,27 @@ export function AngleDirection({
     );
     ctx.fill();
 
-    ctx.strokeStyle = "#d4cfc4";
-    ctx.lineWidth = 1;
-    ctx.setLineDash([3, 3]);
-    const pts = [
-      [startX, startY],
-      [cx, cy],
-      [endX, endY],
-    ];
-    pts.forEach(([px, py]) => {
-      ctx.beginPath();
-      ctx.moveTo(
-        px + Math.cos(perpAngle) * perpLen,
-        py + Math.sin(perpAngle) * perpLen
-      );
-      ctx.lineTo(
-        px - Math.cos(perpAngle) * perpLen,
-        py - Math.sin(perpAngle) * perpLen
-      );
-      ctx.stroke();
-    });
-    ctx.setLineDash([]);
+    // ctx.strokeStyle = "#d4cfc4";
+    // ctx.lineWidth = 1;
+    // ctx.setLineDash([3, 3]);
+    // const pts = [
+    //   [startX, startY],
+    //   [cx, cy],
+    //   [endX, endY],
+    // ];
+    // pts.forEach(([px, py]) => {
+    //   ctx.beginPath();
+    //   ctx.moveTo(
+    //     px + Math.cos(perpAngle) * perpLen,
+    //     py + Math.sin(perpAngle) * perpLen
+    //   );
+    //   ctx.lineTo(
+    //     px - Math.cos(perpAngle) * perpLen,
+    //     py - Math.sin(perpAngle) * perpLen
+    //   );
+    //   ctx.stroke();
+    // });
+    // ctx.setLineDash([]);
 
     ctx.strokeStyle = "#e63946";
     ctx.lineWidth = 1.5;
@@ -146,13 +148,14 @@ export function AngleDirection({
   return <canvas ref={canvasRef} style={style} />;
 }
 
-export function AngleVisual() {
-  const formSchema = z.object({
-    angle: z.array(z.number()).optional(),
-    color1: z.string().optional(),
-    color2: z.string().optional(),
-  });
+const formSchema = z.object({
+  angle: z.array(z.number()),
+  color1: z.string(),
+  color2: z.string(),
+});
 
+export function AngleVisual() {
+  const [codeHtml, setCodeHtml] = useState("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -162,69 +165,99 @@ export function AngleVisual() {
     },
   });
 
+  // TODO 在针对Color类型的input时会有轻微卡顿
+  const angle = useWatch({ control: form.control, name: "angle" });
+  const color1 = useWatch({ control: form.control, name: "color1" });
+  const color2 = useWatch({ control: form.control, name: "color2" });
+  const codeValue = `.element {
+  background: linear-gradient(${angle[0]}deg, ${color1}, ${color2});
+}`;
+
+  useDebounce(
+    async () => {
+      const code = await codeToHtml(codeValue, {
+        lang: "css",
+        themes: {
+          light: "github-light",
+          dark: "github-dark",
+        },
+      });
+      setCodeHtml(code);
+    },
+    1000,
+    [codeValue]
+  );
+
   return (
-    <form>
-      <div className="border border-gray-200 rounded-sm bg-white">
-        <div className="flex overflow-hidden ">
-          <AngleDirection
-            angle={80}
-            color1="#e63946"
-            color2="#2a9d8f"
-            style={{ width: 200, height: 260 }}
-          />
-          <div className="flex-1 bg-gray-500"></div>
-        </div>
-        <div className="border-t border-gray-200 px-7 py-6">
-          <Form {...form}>
-            <form className="space-y-4 flex items-center gap-2">
-              <FormField
-                control={form.control}
-                name="angle"
-                render={({ field }) => (
-                  <FormItem className="w-28">
-                    <FormLabel>角度</FormLabel>
-                    <FormControl>
-                      <Slider
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        max={360}
-                        step={1}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="color1"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>起始色</FormLabel>
-                    <FormControl>
-                      <Input type="color" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="color2"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>结束色</FormLabel>
-                    <FormControl>
-                      <Input type="color" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-        </div>
+    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full md:w-[580px] mx-auto">
+      <div className="flex overflow-hidden w-full">
+        <AngleDirection
+          angle={angle[0]}
+          color1={color1}
+          color2={color2}
+          style={{ width: 200, height: 260 }}
+        />
+        <div
+          className="flex-1"
+          style={{
+            background: `linear-gradient(${angle[0]}deg, ${color1}, ${color2})`,
+          }}
+        ></div>
       </div>
-    </form>
+      <div className="border-t border-gray-200 dark:border-gray-500 px-7 py-6">
+        <Form {...form}>
+          <form className="flex items-center gap-8">
+            <FormField
+              control={form.control}
+              name="angle"
+              render={({ field }) => (
+                <FormItem className="w-28">
+                  <FormLabel>角度</FormLabel>
+                  <FormControl>
+                    <Slider
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      max={360}
+                      step={1}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="color1"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>起始色</FormLabel>
+                  <FormControl>
+                    <Input type="color" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="color2"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>结束色</FormLabel>
+                  <FormControl>
+                    <Input type="color" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+      </div>
+      <div
+        className="mx-7 [&_pre]:mt-0"
+        dangerouslySetInnerHTML={{ __html: codeHtml }}
+      />
+    </div>
   );
 }
