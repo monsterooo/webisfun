@@ -58,16 +58,6 @@
   --color-divider: var(--divider);
   --color-write-card-background: var(--write-card-background);
 
-  /* @keyframes link-effect-start {
-    0% {
-      background-position: 100% bottom
-    }
-
-    to {
-      background-position: 50% bottom
-    }
-  } */
-
 }
 
 :root {
@@ -164,12 +154,15 @@
 }
 
 @layer components {
-  .shiki {
-    background-color: var(--shiki-light-bg);
+  html.dark .shiki,
+  html.dark .shiki span {
+    --shiki-dark-bg: hsl(0deg 0% 0% / 50.2%) !important;
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
 
-    * {
-      color: var(--shiki-light);
-    }
+  html.light .shiki {
+    @apply !bg-primary/5;
   }
 
   .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
