@@ -72,7 +72,7 @@ export function GradientHardEdge() {
   );
 
   return (
-    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full">
+    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full pb-5">
       <div
         className="h-[260px] rounded-t-sm"
         style={{

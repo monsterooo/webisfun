@@ -53,3 +53,49 @@ CSS 渐变的本质是颜色的插值——在两个或多个颜色之间，按�
 这里有一个交互式组件可用于产生硬边效果，你可以拖动滚动条来尝试一下自己创建一个硬边效果。
 
 <GradientHardEdge />
+
+## 径向渐变(radial-gradient)
+
+径向渐变(radial-gradient)可以在一个圆形或椭圆中创建一个从中心点向外辐射的渐变。
+
+它一般常用语法是：
+
+```css
+.element {
+  /* 创建一个基础的椭圆渐变 */
+  background: radial-gradient(gold, pink);
+  /* 指定渐变的位置以及渐变的结束时形状的大小 */
+  background: radial-gradient(closest-side at center, gold, pink);
+}
+```
+
+径向渐变最难理解的就是:
+
+```css
+<radial-extent> =
+  closest-corner   |
+  closest-side     |
+  farthest-corner  |
+  farthest-side
+```
+
+它的作用是决定渐变的结束时形状的大小，不用担心后面有专门的例子来详细解释和演示你会明白的。
+
+<Callout title="at 关键字" type="info">
+  `at` 关键字是用来连接渐变图和渐变结束时形状大小与位置的语法。我理解它就是一种语义化的书写方式只需要记住即可。
+  
+  比如这里的：
+
+```css
+.element {
+  background: radial-gradient(closest-side at center, gold, pink);
+}
+```
+
+`closest-side at center` 在这里说的是：与中心点最接近的边。那么他就是渐变结束时形状的大小(也就是渐变的最终大小区域)。
+
+</Callout>
+
+现在你可以拖动区域的小原点或者修改下拉和颜色参数，来直观的感受径向渐变的工作方式。
+
+<RadialGradientPreview />

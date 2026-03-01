@@ -189,7 +189,7 @@ export function AngleVisual() {
   );
 
   return (
-    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full md:w-[580px] mx-auto">
+    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full md:w-[580px] mx-auto pb-5">
       <div className="flex overflow-hidden w-full">
         <AngleDirection
           angle={angle[0]}
@@ -232,7 +232,11 @@ export function AngleVisual() {
                 <FormItem>
                   <FormLabel>起始色</FormLabel>
                   <FormControl>
-                    <Input type="color" {...field} />
+                    <Input
+                      type="color"
+                      className="p-0 leading-0 border-0 w-9 h-7"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -245,7 +249,11 @@ export function AngleVisual() {
                 <FormItem>
                   <FormLabel>结束色</FormLabel>
                   <FormControl>
-                    <Input type="color" {...field} />
+                    <Input
+                      type="color"
+                      className="p-0 leading-0 border-0 w-9 h-7"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
