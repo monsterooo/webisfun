@@ -122,7 +122,7 @@ export function RadialGradientPreview() {
   }, []);
 
   return (
-    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full mx-auto pb-5">
+    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full mx-auto">
       <div
         className="h-[260px] rounded-t-sm relative"
         style={{ background: g }}
@@ -137,7 +137,7 @@ export function RadialGradientPreview() {
       </div>
       <div className="border-t border-gray-200 dark:border-gray-500 px-7 py-6">
         <Form {...form}>
-          <form className="flex items-center gap-8">
+          <form className="flex items-center gap-8 flex-wrap">
             <FormField
               control={form.control}
               name="shape"
