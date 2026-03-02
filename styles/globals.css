@@ -183,6 +183,14 @@
     > * {
       grid-column: 2;
     }
+
+    & > *:not(:last-child) {
+      @apply mb-5;
+    }
+
+    > pre {
+      @apply !my-0;
+    }
   }
 
   .bleed {
