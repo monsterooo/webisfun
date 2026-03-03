@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
 import { useForm, useWatch } from "react-hook-form";
 import { useDebounce } from "react-use";
-import useMeasure from "react-use-measure";
 import { codeToHtml } from "shiki";
 import * as z from "zod";
 import {
@@ -39,7 +38,7 @@ const formSchema = z.object({
 });
 
 export function RadialGradientPreview() {
-  const [ref, bounds] = useMeasure();
+  const previewRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
   const [codeHtml, setCodeHtml] = useState("");
   const [clientPosition, setClientPosition] = useState<{
@@ -96,6 +95,9 @@ export function RadialGradientPreview() {
   };
 
   const updatePosition = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!previewRef.current) return;
+    const bounds = previewRef.current.getBoundingClientRect();
+    console.log("bounds:", bounds);
     const x = Math.round(
       Math.max(
         0,
@@ -118,6 +120,7 @@ export function RadialGradientPreview() {
     document.addEventListener("pointerup", handleUp);
     return () => {
       document.removeEventListener("pointerup", handleUp);
+      //
     };
   }, []);
 
@@ -126,7 +129,7 @@ export function RadialGradientPreview() {
       <div
         className="h-[260px] rounded-t-sm relative"
         style={{ background: g }}
-        ref={ref}
+        ref={previewRef}
         onPointerDown={handleDown}
         onPointerMove={handleMove}
       >

@@ -70,7 +70,7 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
     <AnimatePresence>
       {openToc && (
         <motion.aside
-          className="flex fixed z-10 left-0 right-0 top-0 mt-3 text-white justify-center items-center select-none"
+          className="flex fixed z-10 left-0 right-0 top-0 mt-3 text-white justify-center items-center select-none pointer-events-none"
           variants={{
             open: {
               y: 0,
@@ -129,12 +129,12 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
             onValueChange={(value) => setAccordionOpen(value)}
           >
             <AccordionItem value="toc-accordion">
-              <AccordionTrigger className="[&>svg]:text-white px-4 hover:no-underline py-2">
+              <AccordionTrigger className="[&>svg]:text-white px-4 hover:no-underline py-2 pointer-events-auto">
                 <div className="flex items-center gap-2">
                   <ScrollProgress className="size-4 text-white" /> {title}
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="flex flex-col gap-4 text-balance">
+              <AccordionContent className="flex flex-col gap-4 text-balance  pointer-events-auto">
                 <ul className="flex list-none flex-col gap-2 text-sm toc max-h-[70vh] overflow-y-auto">
                   {toc.map((item) => (
                     <li
