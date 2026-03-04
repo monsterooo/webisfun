@@ -305,3 +305,40 @@ CSS 渐变的本质是颜色的插值——在两个或多个颜色之间，按�
 <div className="max-w-full w-[402] h-[262px] mx-auto border border-gray-300 dark:border-gray-500" style={{ background: 'radial-gradient(farthest-corner at 144px 104px, olive, mediumPurple 99%, transparent)' }}>
 
 </div>
+
+### 锥形渐变 (conic-gradient)
+
+我们知道了 `linear-gradient` 是基于元素的宽度高绘制渐变，`radial-gradient` 是基于圆形和椭圆绘制渐变。那么锥形就是基于角度从0 ~ 360度之间的渐变。
+
+conic-gradient 围绕一个中心点旋转过渡颜色，就像钟表的表盘。它非常适合制作饼图、色轮、角度效果。
+
+```css
+.element {
+  /* 基础语法 */
+  background: conic-gradient(red, orange, yellow, green, blue);
+
+  /* 基于开始角度和绘制在指定位置语法 */
+  background: conic-gradient(
+    from 90deg at 50% 30%,
+    #f69d3c,
+    10deg,
+    #3f87a6,
+    350deg,
+    #ebf8e1
+  );
+
+  /* 绘制类似于饼图的效果，两个位置相同的角度会制造硬边效果 */
+  background: conic-gradient(
+    red 6deg,
+    orange 6deg,
+    orange 18deg,
+    yellow 18deg,
+    yellow 45deg,
+    green 45deg,
+    green 110deg,
+    blue 110deg,
+    blue 200deg,
+    purple 200deg
+  );
+}
+```
