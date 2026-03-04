@@ -97,7 +97,6 @@ export function RadialGradientPreview() {
   const updatePosition = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!previewRef.current) return;
     const bounds = previewRef.current.getBoundingClientRect();
-    console.log("bounds:", bounds);
     const x = Math.round(
       Math.max(
         0,
