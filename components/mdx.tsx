@@ -1,6 +1,7 @@
 import { MDXContent } from "@content-collections/mdx/react";
 import { cn } from "@/lib/utils";
 import { AngleVisual } from "./contents/angle-visual";
+import { ConicGradientPreview } from "./contents/conic-gradient-preview";
 import { GradientHardEdge } from "./contents/gradient-hard-edge";
 import { RadialGradientPreview } from "./contents/radial-gradient-preview";
 import { Bleed } from "./mdx/bleed";
@@ -27,6 +28,7 @@ const components = {
   AngleVisual,
   GradientHardEdge,
   RadialGradientPreview,
+  ConicGradientPreview,
 };
 
 for (const key in components) {
