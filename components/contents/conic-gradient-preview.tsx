@@ -1,6 +1,22 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, useWatch } from "react-hook-form";
+import { useDebounce } from "react-use";
+import { codeToHtml } from "shiki";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Slider } from "../ui/slider";
 
 type Colors = [string, string, string, string];
 
@@ -14,47 +30,17 @@ interface ConicAngleProps {
   height?: number;
 }
 
-function cpPrefix(cp: ConicAngleProps) {
-  const fr = cp.from !== 0 ? `from ${cp.from}deg ` : "";
-  const at = cp.cx !== 50 || cp.cy !== 50 ? `at ${cp.cx}% ${cp.cy}% ` : "";
+function cpPrefix({ from, cx, cy }: { from: number; cx: number; cy: number }) {
+  const fr = from !== 0 ? `from ${from}deg ` : "";
+  const at = cx !== 50 || cy !== 50 ? `at ${cx}% ${cy}% ` : "";
   return fr || at ? `${fr}${at}, ` : "";
 }
 
 const MODES = {
   smooth: {
-    label: "平滑插值 · 颜色之间自然过渡",
-    swatches: (colors: Colors) => [
-      { id: "cp-c0", val: colors[0], lbl: "0°" },
-      { id: "cp-c1", val: colors[1], lbl: "120°" },
-      { id: "cp-c2", val: colors[2], lbl: "240°" },
-      { id: "cp-c3", val: colors[3], lbl: "360°" },
-    ],
-    css(cp: ConicAngleProps) {
-      const pre = cpPrefix(cp);
-      return `background: conic-gradient(${pre}${cp.colors[0]}, ${cp.colors[1]} 33%, ${cp.colors[2]} 66%, ${cp.colors[3]});`;
-    },
-    applyBg(cp: ConicAngleProps) {
-      const pre = cpPrefix(cp);
-      return `conic-gradient(${pre}${cp.colors[0]}, ${cp.colors[1]} 33%, ${cp.colors[2]} 66%, ${cp.colors[3]})`;
-    },
     spokes: [0, 33, 66, 100],
   },
   hard: {
-    label: "硬边色标 · 同位置两次写法，无过渡",
-    swatches: (colors: Colors) => [
-      { id: "cp-c0", val: colors[0], lbl: "0–25%" },
-      { id: "cp-c1", val: colors[1], lbl: "25–50%" },
-      { id: "cp-c2", val: colors[2], lbl: "50–75%" },
-      { id: "cp-c3", val: colors[3], lbl: "75–100%" },
-    ],
-    css(cp: ConicAngleProps) {
-      const pre = cpPrefix(cp);
-      return `background: conic-gradient(${pre}${cp.colors[0]} 0% 25%, ${cp.colors[1]} 25% 50%, ${cp.colors[2]} 50% 75%, ${cp.colors[3]} 75% 100%);`;
-    },
-    applyBg(cp: ConicAngleProps) {
-      const pre = cpPrefix(cp);
-      return `conic-gradient(${pre}${cp.colors[0]} 0% 25%, ${cp.colors[1]} 25% 50%, ${cp.colors[2]} 50% 75%, ${cp.colors[3]} 75% 100%)`;
-    },
     spokes: [0, 25, 50, 75, 100],
   },
 };
@@ -67,7 +53,8 @@ export function ConicAngle({
   cx,
   cy,
   colors,
-}: ConicAngleProps) {
+  cssValue,
+}: ConicAngleProps & { cssValue: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
@@ -153,7 +140,6 @@ export function ConicAngle({
     ctx.fill();
     ctx.restore();
   };
-
   const getXY = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!wrapRef.current) return;
     const bounds = wrapRef.current.getBoundingClientRect();
@@ -174,7 +160,6 @@ export function ConicAngle({
       y,
     };
   };
-
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     isDraggingRef.current = true;
     const point = getXY(e);
@@ -183,7 +168,7 @@ export function ConicAngle({
 
   useEffect(() => {
     drawAngleCanvas();
-  }, []);
+  }, [from, cx, cy, colors]);
 
   return (
     <div
@@ -195,8 +180,7 @@ export function ConicAngle({
       <div
         className="absolute inset-0 rounded-full shrink-0"
         style={{
-          background:
-            "conic-gradient(rgb(230, 57, 70), rgb(244, 162, 97) 33%, rgb(42, 157, 143) 66%, rgb(26, 26, 46))",
+          background: cssValue,
         }}
       />
       <canvas
@@ -208,24 +192,238 @@ export function ConicAngle({
   );
 }
 
+const formSchema = z.object({
+  mode: z.string(),
+  from: z.array(z.number()),
+  cx: z.array(z.number()),
+  cy: z.array(z.number()),
+  color1: z.string(),
+  color2: z.string(),
+  color3: z.string(),
+  color4: z.string(),
+});
+
 export function ConicGradientPreview() {
+  const [codeHtml, setCodeHtml] = useState("");
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      from: [30],
+      cx: [50],
+      cy: [50],
+      color1: "#e63946",
+      color2: "#f4a261",
+      color3: "#2a9d8f",
+      color4: "#1a1a2e",
+    },
+  });
+
+  const from = useWatch({ control: form.control, name: "from" });
+  const color1 = useWatch({ control: form.control, name: "color1" });
+  const color2 = useWatch({ control: form.control, name: "color2" });
+  const color3 = useWatch({ control: form.control, name: "color3" });
+  const color4 = useWatch({ control: form.control, name: "color4" });
+  const cx = useWatch({ control: form.control, name: "cx" });
+  const cy = useWatch({ control: form.control, name: "cy" });
+
+  const pre = cpPrefix({ from: from[0], cx: cx[0], cy: cy[0] });
+  const cssBackground = `conic-gradient(${pre}${color1}, ${color2} 33%, ${color3} 66%, ${color4})`;
+
+  const codeValue = `.element {
+  background: ${cssBackground};
+}`;
+
+  useDebounce(
+    async () => {
+      const code = await codeToHtml(codeValue, {
+        lang: "css",
+        themes: {
+          light: "github-light",
+          dark: "github-dark",
+        },
+      });
+      setCodeHtml(code);
+    },
+    500,
+    [codeValue]
+  );
+
   return (
-    <div className="">
-      <div className="grid gird-cols-[260px_1fr] grid-rows-[1fr_auto]">
-        <div className="row-span-[1] col-span-[1] flex flex-col gap-3.5">
+    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full mx-auto pb-5">
+      <div className="grid grid-cols-[260px_1fr] grid-rows-[1fr_auto]">
+        <div className="row-[1] col-[1] flex flex-col gap-3.5 p-5 border-r border-gray-200 dark:border-gray-500">
           <ConicAngle
+            cssValue={cssBackground}
             width={200}
             height={200}
             mode="smooth"
-            from={120}
-            cx={50}
-            cy={50}
-            colors={["#e63946", "#f4a261", "#2a9d8f", "#1a1a2e"]}
+            from={from[0]}
+            cx={cx[0]}
+            cy={cy[0]}
+            colors={[color1, color2, color3, color4]}
           />
         </div>
-        <div className="flex-1">控制器</div>
+        <div className="p-5">
+          <Form {...form}>
+            <form className="w-full flex flex-col gap-8">
+              <FormField
+                control={form.control}
+                name="from"
+                render={({ field }) => (
+                  <FormItem className="">
+                    <FormLabel>起始角度 (from)</FormLabel>
+                    <FormControl>
+                      <Slider
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        max={360}
+                        step={1}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="grid grid-cols-2 gap-5">
+                <FormField
+                  control={form.control}
+                  name="cx"
+                  render={({ field }) => (
+                    <FormItem className="">
+                      <FormLabel>旋转中心 x 坐标</FormLabel>
+                      <FormControl>
+                        <Slider
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          max={100}
+                          step={1}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="cy"
+                  render={({ field }) => (
+                    <FormItem className="">
+                      <FormLabel>旋转中心 y 坐标</FormLabel>
+                      <FormControl>
+                        <Slider
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          max={100}
+                          step={1}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="gird gird-cols-1">
+                <Label className="">颜色 (color-stops )</Label>
+
+                <div className="flex gap-5 mt-1">
+                  <FormField
+                    control={form.control}
+                    name="color1"
+                    render={({ field }) => (
+                      <FormItem className="">
+                        <FormControl>
+                          <div>
+                            <Input
+                              type="color"
+                              className="p-0 leading-0 border-0 w-9 h-7"
+                              {...field}
+                            />
+                            <p className="text-xs text-center text-gray-500">
+                              0°
+                            </p>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="color2"
+                    render={({ field }) => (
+                      <FormItem className="">
+                        <FormControl>
+                          <div>
+                            <Input
+                              type="color"
+                              className="p-0 leading-0 border-0 w-9 h-7"
+                              {...field}
+                            />
+                            <p className="text-xs text-center text-gray-500">
+                              120°
+                            </p>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="color3"
+                    render={({ field }) => (
+                      <FormItem className="">
+                        <FormControl>
+                          <div>
+                            <Input
+                              type="color"
+                              className="p-0 leading-0 border-0 w-9 h-7"
+                              {...field}
+                            />
+                            <p className="text-xs text-center text-gray-500">
+                              120°
+                            </p>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="color4"
+                    render={({ field }) => (
+                      <FormItem className="">
+                        <FormControl>
+                          <div>
+                            <Input
+                              type="color"
+                              className="p-0 leading-0 border-0 w-9 h-7"
+                              {...field}
+                            />
+                            <p className="text-xs text-center text-gray-500">
+                              360°
+                            </p>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+            </form>
+          </Form>
+        </div>
       </div>
-      <div>代码</div>
+      <div className="border-t border-gray-200 dark:border-gray-500 px-5 pt-5">
+        <div
+          className="[&_pre]:mb-0!"
+          dangerouslySetInnerHTML={{ __html: codeHtml }}
+        />
+      </div>
     </div>
   );
 }
