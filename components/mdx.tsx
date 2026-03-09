@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { AngleVisual } from "./contents/angle-visual";
 import { ConicGradientPreview } from "./contents/conic-gradient-preview";
 import { GradientHardEdge } from "./contents/gradient-hard-edge";
+import { LinearTrick } from "./contents/linear-trick";
 import { RadialGradientPreview } from "./contents/radial-gradient-preview";
 import { Bleed } from "./mdx/bleed";
 import { Callout } from "./mdx/callout";
@@ -29,6 +30,7 @@ const components = {
   GradientHardEdge,
   RadialGradientPreview,
   ConicGradientPreview,
+  LinearTrick,
 };
 
 for (const key in components) {
