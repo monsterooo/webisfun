@@ -28,6 +28,8 @@ interface ConicAngleProps {
   colors: Colors;
   width?: number;
   height?: number;
+  onPointerDown?: ({ x, y }: { x: number; y: number }) => void;
+  onPointerMove?: ({ x, y }: { x: number; y: number }) => void;
 }
 
 function cpPrefix({ from, cx, cy }: { from: number; cx: number; cy: number }) {
@@ -54,6 +56,8 @@ export function ConicAngle({
   cy,
   colors,
   cssValue,
+  onPointerDown,
+  onPointerMove,
 }: ConicAngleProps & { cssValue: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -163,7 +167,17 @@ export function ConicAngle({
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     isDraggingRef.current = true;
     const point = getXY(e);
-    console.log("point:", point);
+    onPointerDown?.({ x: point?.x || 0, y: point?.y || 0 });
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    const point = getXY(e);
+    onPointerMove?.({ x: point?.x || 0, y: point?.y || 0 });
+  };
+
+  const handlePointerUp = () => {
+    isDraggingRef.current = false;
   };
 
   useEffect(() => {
@@ -176,6 +190,8 @@ export function ConicAngle({
       style={{ width, height }}
       ref={wrapRef}
       onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
     >
       <div
         className="absolute inset-0 rounded-full shrink-0"
@@ -261,6 +277,14 @@ export function ConicGradientPreview() {
             cx={cx[0]}
             cy={cy[0]}
             colors={[color1, color2, color3, color4]}
+            onPointerDown={({ x, y }) => {
+              form.setValue("cx", [x]);
+              form.setValue("cy", [y]);
+            }}
+            onPointerMove={({ x, y }) => {
+              form.setValue("cx", [x]);
+              form.setValue("cy", [y]);
+            }}
           />
         </div>
         <div className="p-5">
