@@ -62,15 +62,13 @@
 
 :root {
   --radius: 0.625rem;
-  /* 主题背景色 */
-  --background: oklch(1 0 0);
-  /* 主题前景色 */
-  --foreground: oklch(0.3 0.04 273.56);
+  --background: oklch(0.18 0 0);
+  --foreground: oklch(1 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.59 0.08 227);
+  --primary: oklch(0.71 0.14 254);
   --primary-foreground: oklch(0.19 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -153,6 +151,20 @@
   margin-inline: auto;
 }
 
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    --viewport-padding: 36px;
+    --tw-prose-body: transparent;
+  }
+  @media (max-width: 768px) {
+    body {
+      --viewport-padding: 16px;
+    }
+  }
+}
+
+
 @layer components {
   html.dark .shiki,
   html.dark .shiki span {
@@ -162,7 +174,7 @@
   }
 
   html.light .shiki {
-    @apply !bg-primary/5;
+    background: oklch(0.28 0.01 248.29) !important;
   }
 
   .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -176,7 +188,7 @@
 
   .blog-wrapper {
     max-width: unset !important;
-    grid-template-columns: 1fr min(calc(var(--container-4xl) - var(--viewport-padding) * 2), calc(100% - var(--viewport-padding) * 2)) 1fr;
+    grid-template-columns: 1fr min(calc(var(--container-3xl) - var(--viewport-padding) * 2), calc(100% - var(--viewport-padding) * 2)) 1fr;
     padding-inline: 0;
     grid-column-gap: var(--viewport-padding);
 
@@ -200,16 +212,22 @@
     padding-inline: var(--horizontal-padding, var(--viewport-padding));
     margin-inline: auto;
   }
+
+  .wrap {
+    @apply max-w-3xl mx-auto md:px-9 px-4;
+  }
 }
 
-@layer base {
-  body {
-    @apply bg-background text-foreground;
-    --viewport-padding: 36px;
+@utility prose-webisfun {
+  @apply prose;
+  & > * {
+    --tw-prose-body: white;
+    --tw-prose-headings: white;
+    --tw-prose-code: white;
+    --tw-prose-quotes: white;
+    --tw-prose-links: var(--primary);
   }
-  @media (max-width: 768px) {
-    body {
-      --viewport-padding: 16px;
-    }
+  & :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply bg-primary/30;
   }
 }
