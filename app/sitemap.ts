@@ -16,5 +16,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `https://webisfun.dev/blog/${blog.slug}`,
       lastModified: new Date(blog.publishedAt),
     })),
+    {
+      url: "https://webisfun.dev/labs",
+      lastModified: new Date(),
+    },
   ];
 }

@@ -237,10 +237,7 @@ export function ConicGradientPreview() {
     async () => {
       const code = await codeToHtml(codeValue, {
         lang: "css",
-        themes: {
-          light: "github-light",
-          dark: "github-dark",
-        },
+        theme: "github-dark",
       });
       setCodeHtml(code);
     },
@@ -249,9 +246,9 @@ export function ConicGradientPreview() {
   );
 
   return (
-    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full mx-auto pb-5">
+    <div className="border border-gray-700 bg-write-card-background rounded-sm w-full mx-auto pb-5">
       <div className="grid grid-cols-[260px_1fr] grid-rows-[1fr_auto]">
-        <div className="row-[1] col-[1] flex flex-col gap-3.5 p-5 border-r border-gray-200 dark:border-gray-500">
+        <div className="row-[1] col-[1] flex flex-col gap-3.5 p-5 border-r border-gray-700">
           <ConicAngle
             cssValue={cssBackground}
             width={200}
@@ -418,7 +415,7 @@ export function ConicGradientPreview() {
           </Form>
         </div>
       </div>
-      <div className="border-t border-gray-200 dark:border-gray-500 px-5 pt-5">
+      <div className="border-t border-gray-700 px-5 pt-5">
         <div
           className="[&_pre]:mb-0!"
           dangerouslySetInnerHTML={{ __html: codeHtml }}

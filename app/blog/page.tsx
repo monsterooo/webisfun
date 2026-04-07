@@ -2,12 +2,11 @@ import { allBlogs } from "@/.content-collections/generated";
 import { BlogItem } from "@/components/blog/blog-item";
 
 export const metadata = {
-  title: "Writing",
-  description:
-    "Uncover, record, and share the most intriguing and fun ideas from the vibrant world of programming.",
+  title: "博客",
+  description: "探索、记录并分享编程世界中最有趣、最有创意的奇妙想法。",
 };
 
-export default function Writing() {
+export default function Blog() {
   const blogs = allBlogs
     .filter((blog) => blog.published)
     .sort(

@@ -121,7 +121,7 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
           <Accordion
             ref={accordionRef}
             className={cn(
-              "bg-primary rounded-2xl transition-all ease-in-out duration-300"
+              "bg-gray-700 rounded-2xl transition-all ease-in-out duration-300"
             )}
             type="single"
             collapsible
@@ -145,7 +145,7 @@ export const TableOfContents = ({ data, title }: TableOfContentsProperties) => {
                     >
                       <a
                         href={item.url}
-                        className="line-clamp-3 flex rounded-sm text-gray-800 hover:text-white text-sm decoration-foreground/0 transition-colors hover:decoration-foreground/50"
+                        className="line-clamp-3 flex rounded-sm text-white/70 hover:text-white text-sm decoration-foreground/0 transition-colors hover:decoration-foreground/50"
                       >
                         {item.title}
                       </a>

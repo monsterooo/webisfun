@@ -1,14 +1,14 @@
-import { HR } from "@/components/hr";
 import { SandpackCustom } from "@/components/sandpack-custom";
 
 export default function Snippet() {
   return (
-    <main className="max-w-4xl mx-auto md:px-9 px-4 mt-10 sm:mt-20">
-      <h1 className="font-plantin text-[56px] leading-[1.2]">Snippet</h1>
-      <p className="text-lg leading-[1.6]">
-        Here&apos;s a code snippet — hope it&apos;s helpful!
-      </p>
-      <HR className="my-8" />
+    <main className="wrap">
+      <div className="py-16">
+        <h1 className="font-plantin text-2xl leading-[1.2]">Labs</h1>
+        <p className="leading-[1.6] text-base mt-3 opacity-70">
+          实验性的代码片段和一些动画效果。
+        </p>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         <div>
           <SandpackCustom

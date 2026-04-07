@@ -21,7 +21,7 @@ export const generateMetadata = async (props: { params: Params }) => {
   };
 };
 
-export default function Writing(props: { params: Params }) {
+export default function Blog(props: { params: Params }) {
   const { slug } = use(props.params);
   const blog = allBlogs.find((blog) => blog.slug === slug);
 

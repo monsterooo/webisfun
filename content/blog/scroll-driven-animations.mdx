@@ -6,7 +6,6 @@ publishedAt: "2026-01-11"
 published: true
 image: "/images/scroll-driven-animations.png"
 category: "CSS"
-detailShowCover: false
 ---
 
 在我以前的工作中，如果要实现一个和滚动相关的动画一般情况下都是使用像 [GSAP](https://gsap.com/) 这种第三方 JavaScript 库来完成。无法通过纯 CSS 实现。
@@ -24,7 +23,7 @@ detailShowCover: false
 
 如果你对 keyframes 不是特别了解，我有另外一篇文章可以帮助你：
 
-- [Keyframe Animations](https://webisfun.dev/writing/keyframe-animations)
+- [Keyframe Animations](https://webisfun.dev/blog/keyframe-animations)
 
 </Callout>
 
@@ -38,7 +37,7 @@ detailShowCover: false
 
 ## 什么是滚动驱动动画？
 
-滚动驱动动画是指可以让我们的动画映射为滚动条的滚动进度而执行 [keyframes](https://webisfun.dev/writing/keyframe-animations) 的动画，可以将其行为理解为动画第一帧对应滚动开始位置，最后一帧对应滚动结束位置。而中间的帧则 CSS 会自动帮我计算插值。
+滚动驱动动画是指可以让我们的动画映射为滚动条的滚动进度而执行 [keyframes](https://webisfun.dev/blog/keyframe-animations) 的动画，可以将其行为理解为动画第一帧对应滚动开始位置，最后一帧对应滚动结束位置。而中间的帧则 CSS 会自动帮我计算插值。
 
 这与传统的基于时间的动画不同，基于时间的动画有一个时间范围比如：300ms，开始帧对应对应 0ms，结束帧对应 300ms。而滚动驱动动画则是没有时间范围的，它是基于滚动条的位置来推进动画。
 

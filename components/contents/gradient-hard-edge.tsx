@@ -60,10 +60,7 @@ export function GradientHardEdge() {
     async () => {
       const code = await codeToHtml(codeValue, {
         lang: "css",
-        themes: {
-          light: "github-light",
-          dark: "github-dark",
-        },
+        theme: "github-dark",
       });
       setCodeHtml(code);
     },
@@ -72,7 +69,7 @@ export function GradientHardEdge() {
   );
 
   return (
-    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full">
+    <div className="border border-gray-700 bg-card-foreground rounded-sm w-full">
       <div
         className="h-[260px] rounded-t-sm"
         style={{
