@@ -9,12 +9,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
     },
     {
-      url: "https://webisfun.dev/writing",
+      url: "https://webisfun.dev/blog",
       lastModified: new Date(),
     },
     ...blogs.map((blog) => ({
-      url: `https://webisfun.dev/writing/${blog.slug}`,
+      url: `https://webisfun.dev/blog/${blog.slug}`,
       lastModified: new Date(blog.publishedAt),
     })),
+    {
+      url: "https://webisfun.dev/labs",
+      lastModified: new Date(),
+    },
   ];
 }

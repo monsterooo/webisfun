@@ -62,17 +62,14 @@ export function RadialGradientPreview() {
 
   const g = `radial-gradient(${shape} ${size} at ${clientPosition.x}% ${clientPosition.y}%, ${color1}, ${color2})`;
   const codeValue = `.element {
-    ${g}
-  }`;
+  ${g}
+}`;
 
   useDebounce(
     async () => {
       const code = await codeToHtml(codeValue, {
         lang: "css",
-        themes: {
-          light: "github-light",
-          dark: "github-dark",
-        },
+        theme: "github-dark",
       });
       setCodeHtml(code);
     },
@@ -124,7 +121,7 @@ export function RadialGradientPreview() {
   }, []);
 
   return (
-    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full mx-auto">
+    <div className="border border-gray-700 bg-card-foreground rounded-sm w-full mx-auto">
       <div
         className="h-[260px] rounded-t-sm relative"
         style={{ background: g }}
@@ -134,10 +131,10 @@ export function RadialGradientPreview() {
       >
         <div
           style={{ left: clientPosition.x + "%", top: clientPosition.y + "%" }}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-4 bg-white rounded-full border-2 border-primary pointer-events-none"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 size-4 bg-card-foreground rounded-full border-2 border-primary pointer-events-none"
         ></div>
       </div>
-      <div className="border-t border-gray-200 dark:border-gray-500 px-7 py-6">
+      <div className="border-t border-gray-700 px-7 py-6">
         <Form {...form}>
           <form className="flex items-center gap-8 flex-wrap">
             <FormField

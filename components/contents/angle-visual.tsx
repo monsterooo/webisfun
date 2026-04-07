@@ -177,10 +177,7 @@ export function AngleVisual() {
     async () => {
       const code = await codeToHtml(codeValue, {
         lang: "css",
-        themes: {
-          light: "github-light",
-          dark: "github-dark",
-        },
+        theme: "github-dark",
       });
       setCodeHtml(code);
     },
@@ -189,7 +186,7 @@ export function AngleVisual() {
   );
 
   return (
-    <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm w-full md:w-[580px] mx-auto pb-5">
+    <div className="border border-gray-700 bg-card-foreground dark:bg-gray-700 rounded-sm w-full md:w-[580px] mx-auto pb-5">
       <div className="flex overflow-hidden w-full">
         <AngleDirection
           angle={angle[0]}
@@ -204,7 +201,7 @@ export function AngleVisual() {
           }}
         ></div>
       </div>
-      <div className="border-t border-gray-200 dark:border-gray-500 px-7 py-6">
+      <div className="border-t border-gray-700 px-7 py-6">
         <Form {...form}>
           <form className="flex items-center gap-8">
             <FormField

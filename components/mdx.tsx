@@ -45,7 +45,7 @@ export function MDX({ code, className }: { code: string; className?: string }) {
     <article
       className={cn(
         className,
-        "prose dark:prose-invert [&_ul]:list-none [&_ul]:pl-0 grid blog-wrapper [&_p]:mt-0 [&_pre]:my-0 [&_:not(:last-child)_pre]:mb-5"
+        "blog-wrapper prose prose-webisfun text-white [&_ul]:list-none [&_ul]:pl-0 grid [&_p]:mt-0 [&_pre]:my-0 [&_:not(:last-child)_pre]:mb-5"
       )}
     >
       <MDXContent code={code} components={components} />

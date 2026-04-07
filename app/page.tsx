@@ -1,14 +1,13 @@
+import { BlogList } from "@/components/home/blog-list";
+import { ProjectList } from "@/components/home/project-list";
 import { Introduce } from "@/components/introduce";
-import { Project } from "@/components/project";
-import { Writing } from "@/components/writing";
 
 export default function Home() {
   return (
-    <main className="max-w-4xl mx-auto md:px-9 px-4 pt-20">
+    <main className="wrap">
       <Introduce />
-      <Project />
-      <hr className="opacity-60 my-14 border-dashed border-0 border-b border-divider" />
-      <Writing />
+      <BlogList />
+      <ProjectList />
     </main>
   );
 }

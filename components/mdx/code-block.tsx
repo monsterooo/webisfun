@@ -18,10 +18,7 @@ export async function CodeBlock({
   const lang = className.replace("language-", "");
   const code = await codeToHtml(children, {
     lang: lang,
-    themes: {
-      light: "github-light",
-      dark: "github-dark",
-    },
+    theme: "github-dark",
   });
 
   return <div dangerouslySetInnerHTML={{ __html: code }} />;
