@@ -98,10 +98,10 @@
   --write-card-background: oklch(95.815% 0 271.152);
 
   /* callout */
-  --callout-info-background: oklch(0.8617 0.0188 232.55);
-  --callout-warn-background: oklch(92.076% 0.02216 74.015);
-  --callout-error-background: oklch(84.76% 0.03179 12.72);
-  --callout-idea-background: oklch(90.08% 0.02081 67.452);
+  --callout-info-background: oklch(22% 0 271);
+  --callout-warn-background: oklch(22% 0 271);
+  --callout-error-background: oklch(22% 0 271);
+  --callout-idea-background: oklch(22% 0 271);
 }
 
 .dark {
