@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { formatDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 interface BlogItemProps {
@@ -32,8 +33,11 @@ export function BlogItem({
           {title}
         </Link>
         {date && (
-          <time dateTime={date.toISOString()} className="text-sm opacity-50">
-            {date.toLocaleDateString()}
+          <time
+            dateTime={date.toISOString()}
+            className="text-sm opacity-50 grid place-content-center"
+          >
+            {formatDate({ date })}
           </time>
         )}
       </div>
