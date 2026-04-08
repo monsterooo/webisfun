@@ -21,12 +21,13 @@ export function BlogItem({
   titleCls,
 }: BlogItemProps) {
   return (
-    <article>
-      <div className="flex justify-between">
+    <article className="group">
+      <div className="flex justify-between items-baseline gap-4">
         <Link
           href={url}
           className={cn(
-            "text-primary hover:underline transition-all duration-300",
+            "text-primary underline-offset-2 decoration-primary/0 hover:decoration-primary/100",
+            "underline transition-[color,text-decoration-color,transform] duration-200 ease-out",
             titleCls
           )}
         >
@@ -35,7 +36,7 @@ export function BlogItem({
         {date && (
           <time
             dateTime={date.toISOString()}
-            className="text-sm opacity-50 grid place-content-center"
+            className="text-sm opacity-50 shrink-0 tabular-nums"
           >
             {formatDate({ date })}
           </time>
