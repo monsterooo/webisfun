@@ -9,7 +9,7 @@ export const PROJECTS = [
     title: "ZoneOverlap",
     category: "Web",
     description: "可视化时区重叠，找到共享的工作时间，并安排全球会议。",
-    url: "/",
+    url: "https://zoneoverlap.com",
   },
   {
     title: "SVGX",
