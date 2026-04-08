@@ -1,7 +1,7 @@
 export function LinearTrick() {
   return (
-    <div className="grid grid-cols-2 gap-5">
-      <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="border border-gray-700 bg-card-foreground rounded-sm">
         <div
           className="h-[100px] rounded-t-sm"
           style={{
@@ -17,7 +17,7 @@ export function LinearTrick() {
         </div>
       </div>
 
-      <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm">
+      <div className="border border-gray-70 bg-card-foreground rounded-sm">
         <div
           className="h-[100px] rounded-t-sm"
           style={{
@@ -38,7 +38,7 @@ export function LinearTrick() {
         </div>
       </div>
 
-      <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm">
+      <div className="border border-gray-70 bg-card-foreground rounded-sm">
         <div
           className="h-[100px] rounded-t-sm text-transparent text-3xl font-bold grid place-content-center"
           style={{
@@ -58,7 +58,7 @@ export function LinearTrick() {
         </div>
       </div>
 
-      <div className="border border-gray-200 dark:border-gray-500 bg-white dark:bg-gray-700 rounded-sm">
+      <div className="border border-gray-70 bg-card-foreground rounded-sm">
         <div
           className="h-[100px] rounded-t-sm"
           style={{

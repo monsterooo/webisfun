@@ -263,7 +263,7 @@ export function ConicGradientPreview() {
 
   return (
     <div className="border border-gray-700 bg-write-card-background rounded-sm w-full mx-auto pb-5">
-      <div className="grid grid-cols-[260px_1fr] grid-rows-[1fr_auto]">
+      <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] grid-rows-[1fr_auto]">
         <div className="row-[1] col-[1] flex flex-col gap-3.5 p-5 border-r border-gray-700">
           <ConicAngle
             cssValue={cssBackground}
