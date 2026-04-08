@@ -3,7 +3,8 @@ import { BlogItem } from "@/components/blog/blog-item";
 
 export const metadata = {
   title: "博客",
-  description: "探索、记录并分享编程世界中最有趣、最有创意的奇妙想法。",
+  description:
+    "记录 Web 开发路上的探索与发现，分享前端技术中那些有趣的想法与实践心得。",
 };
 
 export default function Blog() {
@@ -19,7 +20,8 @@ export default function Blog() {
       <div className="py-16">
         <h1 className="font-plantin text-2xl leading-[1.2]">博客</h1>
         <p className="leading-[1.6] text-base mt-3 opacity-70">
-          发现、记录并分享充满活力的编程世界中最有趣、最有趣的想法。
+          记录 Web
+          开发路上的探索与发现，分享前端技术中那些有趣的想法与实践心得。
         </p>
       </div>
       <div className="flex flex-col gap-4">
