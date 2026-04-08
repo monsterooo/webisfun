@@ -8,11 +8,23 @@ export function Footer() {
           Email
         </a>
         /
-        <a href={PROFILE.GITHUB_URL} className="hover:underline transition">
+        <a
+          href={PROFILE.GITHUB_URL}
+          className="hover:underline transition"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub 主页（在新标签页打开）"
+        >
           Github
         </a>
         /
-        <a href={PROFILE.TWITTER_URL} className="hover:underline transition">
+        <a
+          href={PROFILE.TWITTER_URL}
+          className="hover:underline transition"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Twitter / X 主页（在新标签页打开）"
+        >
           X
         </a>
       </div>

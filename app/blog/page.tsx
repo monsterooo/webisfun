@@ -23,9 +23,9 @@ export default function Blog() {
         </p>
       </div>
       <div className="flex flex-col gap-4">
-        {blogs.map((blog, index) => (
+        {blogs.map((blog) => (
           <BlogItem
-            key={index}
+            key={blog.slug}
             title={blog.title}
             url={`/blog/${blog.slug}`}
             date={new Date(blog.publishedAt)}

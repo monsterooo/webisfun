@@ -18,7 +18,7 @@ export function ScrollProgress({ className }: ScrollProgressProps) {
       <style>
         {`
           @keyframes rootScrollToCircle {
-            form {
+            from {
               stroke-dashoffset: 100px;
             }
             to {

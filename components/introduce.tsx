@@ -12,12 +12,18 @@ export function Introduce() {
         <a
           href="https://github.com/monsterooo"
           className="text-sm hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub 主页（在新标签页打开）"
         >
           Github
         </a>
         <a
           href="https://x.com/BuildWithZhu"
           className="text-sm hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Twitter / X 主页（在新标签页打开）"
         >
           Twitter
         </a>
