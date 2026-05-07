@@ -1,0 +1,172 @@
+---
+title: "Tanstack Start + Cloudflare 部署指南"
+summary: "这篇文章我将分享将Tanstack Start 部署到 Cloudflare 上线的方方面面"
+author: "BuildWithZhu"
+publishedAt: "2026-05-07 23:58"
+published: true
+image: "/images/css-direction.png"
+category: "Tanstack Start"
+---
+
+我是一个 Next.js 的爱好者，我的很多项目包括本博客都是基于 Next.js 开发的。在开发 Next.js 过程中我觉得主要有两点让我不满意：
+
+- 框架未知论：在使用 Next.js 过程中我经常会纠结 `use client` 和 `use server` 的运行模型，小心谨慎的处理着他们的区别。另一点就是缓存，如果你用过就知道其实他的执行模型是很不清晰的，要自己做一些试验才能 100% 确定其作用。
+
+- 基础设施绑定：如果你用 Next.js 最好的可能就是部署到 Vecel 或者自托管(Docker)方式。如果要部署到 Cloudflare 其实是需要依赖于[OpenNext](https://opennext.js.org/cloudflare)。不过最近他们推出了 [Adapters](https://nextjs.org/docs/app/guides/deploying-to-platforms#adapters) 可能是一个好的信号。
+
+基于这些原因我决定研究更轻量级的框架，它就是 [Tanstack Start](https://github.com/tanstack/start)。它是基于 `@tanstack/react-router` 和 `Vite` 之上的全栈框架，他轻量、执行模型明确、可以部署在任何云服务平台上。
+
+由此我选择的核心基础框架和方案就是：
+
+- Tanstack Start: 用于编写前端和后端的代码
+
+- Drzzle: 用于定义数据库的 Schema 和 ORM 的数据库操作框架
+
+- Cloudflare Worker: 用于部署主应用和执行一些 Queue 任务
+
+- Cloudflare D1: 用于存储应用的数据库
+
+- Cloudflare Cron: 用于执行程序中的定时任务
+
+- Cloudflare Queue: 用于执行一些队列任务
+
+下面我就一步步从 0 到 1 来分享一下我是怎么实现的，其中包括本地开发环境，Pre 环境 和 Prod 环境的部署上线
+
+<Callout title="目标受众" type="info">
+  这篇博客是为有过全栈开发经验的同学准备的，如果你完全不具备全栈开发经验也可以跟着一步一步操作，这也是一个学习过程。
+</Callout>
+
+### 开发前的准备
+
+在开发前你需要准备一个 Cloudflare 账号备用，后期需要部署时的授权。
+
+我还需要介绍一下 [Better-T-Stack](https://www.better-t-stack.dev/) 它是一个用于创建项目基础结构的一个 CLI 工具，可以为我们提供一个良好的目录结构。接下来我们就使用它来初始化一个项目吧。
+
+### 初始化项目
+
+首先运行命令 `pnpm create better-t-stack@latest` 初始化一个项目，接下来有一个选项。我的选择是：
+
+```bash
+◇  Enter your project name or path (relative to current directory)
+│  happy-tanstack-cf
+│
+◇  Select project type
+│  Web
+│
+◇  Choose web
+│  TanStack Start
+│
+◇  Select backend
+│  Self (Fullstack)
+│
+◇  Select database
+│  SQLite
+│
+◇  Select ORM
+│  Drizzle
+│
+◇  Select API type
+│  None
+│
+◇  Select authentication provider
+│  Better-Auth
+│
+◇  Select payments provider
+│  None
+│
+◇  Select addons
+│  Biome, Husky
+│
+◇  Include examples
+│  none
+│
+◇  Select sqlite setup option
+│  Cloudflare D1
+│
+◇  Initialize git repository?
+│  No
+│
+◇  Choose package manager
+│  pnpm
+│
+◇  Install dependencies?
+│  No
+```
+
+当上面代码执行完毕以后，你会得到这样一个目录结构:
+
+```
+.
+├── apps
+│   └── web           # 应用主程序
+│       ├── public    # 公共资源
+│       └── src
+│           ├── components
+│           ├── functions   # API 函数
+│           ├── lib
+│           ├── middleware  # 中间件
+│           └── routes      # 页面和 API 路由
+│               └── api
+└── packages
+    ├── auth    # Better Auth 登录模块
+    │   └── src
+    ├── config  # 项目基础配置
+    ├── db      # 数据库模块
+    │   └── src
+    │       └── schema
+    ├── env     # 环境变量模块
+    │   └── src
+    ├── infra   # 基础设置模块
+    └── ui      # 基于 Shadcn 组件的 UI 模块
+        └── src
+            ├── components
+            ├── hooks
+            ├── lib
+            └── styles
+
+```
+
+这里值得一提的是 infra 模块，它是一个基于 [Alchemy](https://alchemy.run/) 框架的将基础设施抽象成代码的框架。所有的 Cloudflare 资源创建和释放都将是通过代码自动化来完成，期间不需要我们手动操作。
+
+### 运行本地开发环境
+
+现在运行命令 `pnpm i` 去安装我们的项目依赖文件。
+
+执行 `pnpm dev` 启动本地开发环境，浏览器访问 `http://localhost:3001` 即可看到界面。
+
+<Callout title="pnpm 追加日志" type="idea">
+  我开发中一般会运行 `pnpm -reporter=append-only dev` 让 CLI
+  的日志不折叠这样方便查看日志
+</Callout>
+
+看到这样的日志就证明我们的服务启动成功：
+
+```bash
+packages/infra dev:   VITE v8.0.11  ready in 3554 ms
+packages/infra dev:   ➜  Local:   http://localhost:3001/
+packages/infra dev:   ➜  Network: use --host to expose
+packages/infra dev:   ➜  Debug:   http://localhost:3001/__debug
+packages/infra dev: [updating]  web Updating Resource...
+packages/infra dev: [updated]   web Updated Resource
+packages/infra dev: Web    -> http://localhost:3001/
+```
+
+<Callout title="Alchemy 模拟环境" type="info">
+  启动服务后我们可以在根目录看到 `.alchemy` 文件夹，这是 Alchemy
+  为我们的模拟环境，它包含了我们的基础设施资源。
+
+```bash
+.alchemy
+└── miniflare
+  └── v3
+      ├── cache
+      │   └── miniflare-CacheObject
+      ├── d1
+      │   └── miniflare-D1DatabaseObject
+      ├── do
+      └── workflows
+```
+
+它主要是会为我们模拟一个本地的 `SQLite` 数据库。
+
+</Callout>

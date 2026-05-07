@@ -8,7 +8,7 @@ export function Li(props: Props) {
     <li className="ps-0 [&_p]:mt-0">
       <div className="flex items-center gap-2">
         <ArrowRight className="size-5 text-primary self-start translate-y-1 flex-shrink-0" />
-        {props.children}
+        <div>{props.children}</div>
       </div>
     </li>
   );
