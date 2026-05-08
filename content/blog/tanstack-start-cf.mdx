@@ -33,7 +33,8 @@ category: "Tanstack Start"
 下面我就一步步从 0 到 1 来分享一下我是怎么实现的，其中包括本地开发环境，Pre 环境 和 Prod 环境的部署上线
 
 <Callout title="目标受众" type="info">
-  这篇博客是为有过全栈开发经验的同学准备的，如果你完全不具备全栈开发经验也可以跟着一步一步操作，这也是一个学习过程。
+  由于这不是一篇讲解全栈开发的教程，所以本博重点在于如何实现本地开发和部署到
+  Cloudflare，所以这边博客是为有一定经验的朋友准备的。如果你完全不具备全栈开发经验也可以跟着一步一步操作，这也是一个学习过程。
 </Callout>
 
 ### 开发前的准备
@@ -170,3 +171,109 @@ packages/infra dev: Web    -> http://localhost:3001/
 它主要是会为我们模拟一个本地的 `SQLite` 数据库。
 
 </Callout>
+
+### 数据库
+
+因为我们要部署到 Cloudflare D1 所以我这里选择了 SQLite 数据库。因为我们选择了 Better-Auth 作为登录验证，所以我们可以查看 `packages/db/src/schema/auth.ts` 文件这就是 Betteru-Auth 的基础 Schema 文件。通过这个文件我们就可以帮我们的数据库表和字段迁移到 SQLite 数据库中。
+
+现在我们执行 `pnpm run db:generate` 就可以自动生成数据库表和字段。
+
+随便找一个数据库管理软件，我使用的是 [SQLiteStudio](https://letos.org/) 打开 `.alchemy/miniflare/v3/d1/miniflare-D1DatabaseObject/3d4ffb7927e8eeadb0c3bb4dfa75c351d1eab010615de505483c732d2b67801c.sqlite`，你的数据库名字可能会不一样但是一定在 miniflare-D1DatabaseObject 目录下。就可以查看到我们已经迁移好的表和数据库了。
+
+![数据库结构](/images/start-cf-1.png "数据库结构")
+
+如果你需要新增或修改 Schema 则可以在 `packages/db/src/schema` 中新增文件，像 `auth.ts` 一样，然后再次执行 `pnpm run db:generate` 就可以自动生成数据库表和字段。
+
+### 测试程序正确性
+
+现在我们访问 `http://localhost:3001/login` 来注册一个账号验证程序是否正确。当你看到如下界面的时候代表基础程序一切正常运行。
+
+![正常界面](/images/start-cf-2.png "正常界面")
+
+### 部署到 Cloudflare
+
+当程序运行正常后需要尽快部署到 Cloudflare 上，因为部署的越晚程序越部署调试的难度会加大。
+
+#### 授权 Cloudflare
+
+我们使用了 [alchemy](https://alchemy.run/concepts/cli/#configure) 框架所以我们需要先执行 `pnpm alchemy configure` 然后来授权 Cloudflare 的访问权限。
+
+接下来会让你输入一个 Profile name，我们保持默认的 `defualt` 就可以了，按回车就会跳转授权。
+
+你只需要登录 Cloudflare 跟着操作就可以了。
+
+#### 确定部署环境
+
+目前我想部署两个环境分别是： Pre 和 Prod，Pre 是预发布环境用来验证程序的正确性最后再发布到 Prod 环境上。
+
+下面就来配置环境，Prod 环境和 Pre 环境其实是一样的配置过程。
+
+#### 创建 env 文件
+
+创建 `packages/infra/.env.pre` 和 `packages/infra/.env.prod` 文件内容暂时为空，请注意所有 .env 文件都不要提交到 Git 仓库中。
+
+然后我们将 `apps/web/.env` 中的内容放到 `packages/infra/.env.pre` 和 `packages/infra/.env.prod` 文件中。
+
+然后将 BETTER_AUTH_URL 和 CORS_ORIGIN 修改为实际网址，如果你没有线上的域名那么可以使用 worker.dev 的默认域名。
+
+比如你 Cloudflare 登录的邮箱为: abc.net@gmail.com，那么为你生成的 URL 就是：`https://happy-tanstack-cf-web-pre.abc-net.workers.dev`
+
+最终配置就是这样的：
+
+```json
+# pre 配置
+BETTER_AUTH_SECRET=4MrV6HA2C5vHmVYAhMZpsCunVTllC8aT
+BETTER_AUTH_URL=https://happy-tanstack-cf-web-pre.abc-net.workers.dev
+CORS_ORIGIN=https://happy-tanstack-cf-web-pre.abc-net.workers.dev
+```
+
+```json
+# prod 配置
+BETTER_AUTH_SECRET=4MrV6HA2C5vHmVYAhMZpsCunVTllC8aT
+BETTER_AUTH_URL=https://happy-tanstack-cf-web-prod.abc-net.workers.dev
+CORS_ORIGIN=https://happy-tanstack-cf-web-prod.abc-net.workers.dev
+```
+
+#### 创建部署命令
+
+首先在根目录中的 `package.json` 新增如下两个命令，分别对应 Pre 和 Prod 的发布命令
+
+```json
+{
+  "scripts": {
+    "release:pre": "pnpm --filter @happy-tanstack-cf/infra release:pre",
+    "release:prod": "pnpm --filter @happy-tanstack-cf/infra release:prod"
+  }
+}
+```
+
+然后在 `packages/infra/package.json` 中新增如下两个命令：
+
+```json
+{
+  "scripts": {
+    "release:pre": "alchemy deploy --stage pre --env-file .env.pre",
+    "release:prod": "alchemy deploy --stage prod --env-file .env.prod"
+  }
+}
+```
+
+`alchemy deploy` 会在 Cloudflare 创建 Worker、D1、编译打包代码、上传到 Cloudflare 上。
+
+#### 开始部署
+
+完成以上步骤后，执行 `pnpm release:pre` 就可以开始部署 Pre 环境了。
+
+等待一会看到如下界面代表部署成功，可以访问这个地址并且验证功能，如果有错误请根据上面步骤仔细检查。
+
+![部署成功](/images/start-cf-3.png "部署成功")
+
+测试注册是否正确
+
+![测试 Pre 注册](/images/start-cf-4.png "测试 Pre 注册")
+
+### 增加 Cloudflare Cron 定时任务
+
+在 Cloudflare 中我们可以创建定时任务，定时任务可以实现多种任务，比如每天凌晨十点后发送邮件。
+
+下面我们就来创建一个定时任务，它会在每天凌晨十点后发送一封邮件。
