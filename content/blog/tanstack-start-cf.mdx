@@ -373,8 +373,94 @@ export const web = await TanStackStart("web", {
 
 ### 环境变量
 
+环境变量有两种类型一种为保密环境变量，另一种为公开环境变量。
+
+```ts
+export const web = await TanStackStart("web", {
+  cwd: "../../apps/web",
+  bindings: {
+    DB: db, // 绑定到 Env 中的名称
+    CORS_ORIGIN: alchemy.env.CORS_ORIGIN!,
+    BETTER_AUTH_SECRET: alchemy.secret.env.BETTER_AUTH_SECRET!,
+    BETTER_AUTH_URL: alchemy.env.BETTER_AUTH_URL!,
+  },
+});
+```
+
+上面我们使用了 `alchemy.env.CORS_ORIGIN` 公开环境变量，它会在 Cloudflare 中以明文显示。
+
+`alchemy.secret.env.BETTER_AUTH_SECRET` 这种为非公开环境变量，它会在 Cloudflare 中以加密显示，部署以后在 Cloudflare 我们无法看到其真实的值。
+
+你可以根据你的需要设置不同的环境变量类型
+
 ### 增加 Cloudflare Cron 定时任务
 
-好了，现在大概理清了一些基本的运行原理，现在我们继续为项目增加一个定时任务。定时任务是一种在程序中非常常见的功能，比如每天凌晨十点后发送邮件。
+好了，现在大概理清了一些基本的运行原理，现在我们继续为项目增加一个定时任务。定时任务是一种在程序中非常常见的功能，比如每天早上十点后发送邮件。
 
-下面我们就来创建一个定时任务，它会在每天凌晨十点后发送一封邮件。
+下面我们就来创建一个定时任务，它会在每天早上十点后发送一封邮件。
+
+为了实现定时任务，首先我们要定义定时任务执行的时间，在 `packages/infra/alchemy.run.ts` 中定义定时任务 Cron 表达：
+
+```ts
+// 省略上面的代码
+export const web = await TanStackStart("web", {
+  cwd: "../../apps/web",
+  bindings: {
+    DB: db,
+    CORS_ORIGIN: alchemy.env.CORS_ORIGIN!,
+    BETTER_AUTH_SECRET: alchemy.secret.env.BETTER_AUTH_SECRET!,
+    BETTER_AUTH_URL: alchemy.env.BETTER_AUTH_URL!,
+  },
+  // 这里定义定时任务执行时间
+  crons: ["* * * * *"], //["0 10 * * *"],
+});
+// 省略下面的代码
+```
+
+定义完毕定时任务后，我们需要定义定时任务接收的代码。根据 [wrangler](https://developers.cloudflare.com/workers/configuration/cron-triggers/#add-a-cron-trigger) 官方文档可以看到需要在 server.ts 中定义一个名为 `scheduled` 的函数。一旦有定时任务达到会自动执行。
+
+我们添 `apps/web/src/server.ts` 文件定义如下代码：
+
+```ts
+import handler from "@tanstack/react-start/server-entry";
+import { sendMail } from "./functions/send-mail";
+
+export default {
+  fetch(request: Request) {
+    return handler.fetch(request);
+  },
+  async scheduled(
+    event: ScheduledEvent,
+    env: Env,
+    _ctx: ExecutionContext
+  ): Promise<void> {
+    if (event.cron === "0 10 * * *") {
+      console.log("开始发送电子邮件");
+      await sendMail();
+    }
+  },
+};
+```
+
+这里我解释一下 fetch 函数是程序的主入口代码，可以定义一些中间件和国际化函数处理，其他方法可以参考 `wrangler` 文档。
+
+然后我们实现这个模拟邮件发送 `sendMail` 方法：
+
+```ts
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+export async function sendMail() {
+  // TODO: 模拟发送电子邮件
+  await sleep(1000);
+  console.log("电子邮件已发送");
+}
+```
+
+再次启动服务等待结果定时任务并没有触发，这是因为在开发环境定时任务不会自动触发需要手动执行：
+
+`http://localhost:3001/cdn-cgi/handler/scheduled?cron=0+10+*+*+*`
+
+才会在开发环境触发定时任务。
+
+如果是部署到 Cloudflare 就会自动触发。
+
+### 真实的邮件发送
