@@ -315,7 +315,7 @@ export function createDb() {
 }
 ```
 
-但是上面的 `wrangler.json` 文件只是现象，到时是什么会导致生成 `d1_databases` 这样的配置呢？
+但是上面的 `wrangler.json` 文件只是现象，到底是什么会导致生成 `d1_databases` 这样的配置呢？
 
 答案就在 `packages/infra/alchemy.run.ts` 文件中的 `D1Database` 对象的创建：
 
@@ -370,6 +370,8 @@ export const web = await TanStackStart("web", {
 它首先创建了一个数据库资源，然后将其绑定到 `bindings` 中，在 `bindings` 中我们可以定义我们需要注入到 Env 中的名称。
 
 这样在你编译的时候就是生成对应的 `wrangler.json` 配置文件然后发布到 Cloudflare 上，一切就是这样工作起来的。
+
+### 环境变量
 
 ### 增加 Cloudflare Cron 定时任务
 
