@@ -272,8 +272,107 @@ CORS_ORIGIN=https://happy-tanstack-cf-web-prod.abc-net.workers.dev
 
 ![测试 Pre 注册](/images/start-cf-4.png "测试 Pre 注册")
 
+### 发了了什么
+
+我们一步步操作服务就这样在开发环境和 Pre 环境运行起来了。但是这背后到底发生了什么？
+
+答案就是在 `apps/web/dist/server/wrangler.json` 文件中，它是 Cloudflare 的 Wrangler 配置文件，在这个配置文件中我们可以定义需要在 Cloudflare 上部创建的资源然后绑定到我们项目。同时这些资源会注入到 Worker 中的 Env 中，这样我们就可以在代码中调用对应的服务。
+
+比如我们要调用数据库操作，我们可以查看 `packages/db/src/index.ts` 文件，代码是这样的：
+
+```ts
+import { env } from "@happy-tanstack-cf/env/server";
+import { drizzle } from "drizzle-orm/d1";
+import * as schema from "./schema";
+
+export function createDb() {
+  return drizzle(env.DB, { schema });
+}
+```
+
+这里 `env.DB` 中的 DB 就是来之 `wrangler.json` 文件中的绑定资源名称。查看 `wrangler.json` 文件可以验证这一点：
+
+下面 `d1_databases.binding` 就是要注入到 Env 中名称，你也可以改成别的名称。
+
+```json
+{
+  "topLevelName": "happy-tanstack-cf-web-pre",
+  "vars": {
+    "CORS_ORIGIN": "https://happy-tanstack-cf-web-pre.abc-net.workers.dev",
+    "BETTER_AUTH_SECRET": "4MrV6HA2C5vHmVYAhMZpsCunVTllC8aT",
+    "BETTER_AUTH_URL": "https://happy-tanstack-cf-web-pre.abc-net.workers.dev"
+  },
+  "r2_buckets": [],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_id": "775286b6-eb64-40c0-8784-6bd1bd1086fa",
+      "database_name": "happy-tanstack-cf-database-pre",
+      "migrations_dir": "../../packages/db/src/migrations",
+      "preview_database_id": "775286b6-eb64-40c0-8784-6bd1bd1086fa"
+    }
+  ]
+}
+```
+
+但是上面的 `wrangler.json` 文件只是现象，到时是什么会导致生成 `d1_databases` 这样的配置呢？
+
+答案就在 `packages/infra/alchemy.run.ts` 文件中的 `D1Database` 对象的创建：
+
+```ts
+import alchemy from "alchemy";
+import { D1Database, TanStackStart } from "alchemy/cloudflare";
+import { config } from "dotenv";
+
+config({ path: "./.env" });
+config({ path: "../../apps/web/.env" });
+
+const app = await alchemy("happy-tanstack-cf");
+
+// 数据库资源创建
+const db = await D1Database("database", {
+  migrationsDir: "../../packages/db/src/migrations",
+});
+
+export const web = await TanStackStart("web", {
+  cwd: "../../apps/web",
+  bindings: {
+    DB: db,
+    CORS_ORIGIN: alchemy.env.CORS_ORIGIN!,
+    BETTER_AUTH_SECRET: alchemy.secret.env.BETTER_AUTH_SECRET!,
+    BETTER_AUTH_URL: alchemy.env.BETTER_AUTH_URL!,
+  },
+});
+
+console.log(`Web    -> ${web.url}`);
+
+await app.finalize();
+```
+
+我们可以看到 `alchemy.run.ts` 文件中有这样一段代码：
+
+```ts
+// 创建资源
+const db = await D1Database("database", {
+  migrationsDir: "../../packages/db/src/migrations",
+});
+export const web = await TanStackStart("web", {
+  cwd: "../../apps/web",
+  bindings: {
+    DB: db, // 绑定到 Env 中的名称
+    CORS_ORIGIN: alchemy.env.CORS_ORIGIN!,
+    BETTER_AUTH_SECRET: alchemy.secret.env.BETTER_AUTH_SECRET!,
+    BETTER_AUTH_URL: alchemy.env.BETTER_AUTH_URL!,
+  },
+});
+```
+
+它首先创建了一个数据库资源，然后将其绑定到 `bindings` 中，在 `bindings` 中我们可以定义我们需要注入到 Env 中的名称。
+
+这样在你编译的时候就是生成对应的 `wrangler.json` 配置文件然后发布到 Cloudflare 上，一切就是这样工作起来的。
+
 ### 增加 Cloudflare Cron 定时任务
 
-在 Cloudflare 中我们可以创建定时任务，定时任务可以实现多种任务，比如每天凌晨十点后发送邮件。
+好了，现在大概理清了一些基本的运行原理，现在我们继续为项目增加一个定时任务。定时任务是一种在程序中非常常见的功能，比如每天凌晨十点后发送邮件。
 
 下面我们就来创建一个定时任务，它会在每天凌晨十点后发送一封邮件。
