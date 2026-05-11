@@ -465,6 +465,81 @@ export async function sendMail() {
 
 ### 真实的邮件发送
 
+要使用 Cloudflare 发送电子邮件，首先需要按照 [文档](https://developers.cloudflare.com/email-service/get-started/send-emails/#set-up-your-domain)，初始化服务。
+
+然后根据 [Alchemy文档](https://alchemy.run/providers/cloudflare/email-sender/) 我们需要配置 EmailSender 和绑定到 Env 中。
+
+首先我们再次进入 `packages/infra/alchemy.run.ts` 文件，新建一个 `EmailSender` 对象：
+
+```ts
+// 发送邮件配置
+const emailSendConfig = EmailSender({
+  allowedSenderAddresses: ["noreply@example.com"],
+  // dev: { remote: true }, // 如果你想在开发环境发送真实的邮件请打开它
+});
+```
+
+然后我们只需要将 `emailSendConfig` 对象绑定到 Env 中即可：
+
+```ts
+export const web = await TanStackStart("web", {
+  bindings: {
+    EMAIL: emailSendConfig,
+    // 省略其他代码
+  },
+});
+```
+
+现在我们来将之前使用 `sendMail` 方法的代码替换成如下代码：
+
+```ts
+import { env } from "@happy-tanstack-cf/env/server";
+
+export async function sendMail(to: string) {
+  await env.EMAIL.send({
+    to,
+    from: "noreply@example.com",
+    subject: "测试邮件abc",
+    html: "<h1>测试邮件abc</h1>",
+  });
+}
+```
+
+然后更新定时任务重的函数调用，传递一个 email 的接收地址：
+
+```ts
+export default {
+  async scheduled(
+    event: ScheduledEvent,
+    env: Env,
+    _ctx: ExecutionContext
+  ): Promise<void> {
+    if (event.cron === "0 10 * * *") {
+      console.log("开始发送电子邮件");
+      await sendMail("example.com@gmail.com"); // 传递一个接收邮件地址
+    }
+  },
+};
+```
+
+现在我们手动运行定时任务 `http://localhost:3001/cdn-cgi/handler/scheduled?cron=0+10+*+*+*` 去触发邮件的发送，查看控制台日志有如下输出：
+
+```bash
+packages/infra dev: 开始发送电子邮件
+packages/infra dev: send_email binding called with MessageBuilder:
+packages/infra dev: From: noreply@example.com
+packages/infra dev: To: example.com@gmail.com
+packages/infra dev: Subject: 测试邮件abc
+packages/infra dev: HTML: /var/folders/kr/mdb4d54j1m176s8c2z1t70y80000gn/T/miniflare-75e51ec333560116240eda8a14429b8e/email/email-html/52d0ff65-0694-47d3-9f8b-f5e2722a5285.html
+```
+
+上面的 HTML 地址就是我们邮件发送的 HTML，你可以用浏览器打开查看是否正确。
+
+<Callout title="找不到 EmailSender 导出成员错误" type="warn">
+  如果你的代码提示`模块“"alchemy/cloudflare"”没有导出的成员“EmailSender”`，请更新
+  `pnpm-workspace.yaml` 中的 alchemy 版本到 `^0.93.7`, 重新执行 `pnpm i` 即可。
+</Callout>
+
 ### Queue 队列任务
 
 ### 持久化部署
