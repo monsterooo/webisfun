@@ -542,6 +542,141 @@ packages/infra dev: HTML: /var/folders/kr/mdb4d54j1m176s8c2z1t70y80000gn/T/minif
 
 ### Queue 队列任务
 
-### 持久化部署
+现在我们来实现队列任务，由于队列需要有单独的名称，首先我们要区分 Pre 和 Prod 环境的队列名称。
+
+现在我们需在 `alchemy.run.ts` 文件定义定义一个 `stage` 变量用于获取我们编译时传递的环境。
+
+```ts
+const stage = process.env.STAGE ?? "dev";
+```
+
+然后需要创建一个 队列名称 + stage 的队列名称：
+
+```ts
+const queueName = `example-queue-${stage}`;
+```
+
+接下来需要创建消息队列对象：
+
+```ts
+// 处理消息队列配置;
+const exampleQueue = await Queue(queueName, {
+  name: queueName,
+});
+```
+
+最后将名称和消息队列绑定到 TanStackStart 对象上，完整的代码如下：
+
+```ts
+import alchemy from "alchemy";
+import {
+  D1Database,
+  EmailSender,
+  Queue,
+  TanStackStart,
+} from "alchemy/cloudflare";
+import { config } from "dotenv";
+
+// 省略代码
+
+const stage = process.env.STAGE ?? "dev";
+const queueName = `example-queue-${stage}`;
+// 处理消息队列配置;
+const exampleQueue = await Queue(queueName, {
+  name: queueName,
+});
+export const web = await TanStackStart("web", {
+  // 省略的代码
+  bindings: {
+    EXAMPLE_QUEUE: exampleQueue,
+  },
+  eventSources: [
+    {
+      name: queueName,
+      queue: exampleQueue,
+      settings: {
+        batchSize: 4,
+        maxConcurrency: 3,
+        maxRetries: 5,
+        maxWaitTimeMs: 2000,
+        retryDelay: 30,
+      },
+    },
+  ],
+});
+
+console.log(`Web    -> ${web.url}`);
+
+await app.finalize();
+```
+
+队列任务定义完毕，接下来我们需要在 `apps/web/src/server.ts` 中定义队列处理函数，代码如下：
+
+```ts
+import handler from "@tanstack/react-start/server-entry";
+import { sendMail } from "./functions/send-mail";
+
+export default {
+  // 省略代码
+  async queue(batch: MessageBatch<{ id: string }>, _env: Env): Promise<void> {
+    batch.messages.map(async (msg) => {
+      console.log("执行一些异步处理任务", msg.body.id);
+      msg.ack(); // 告诉队列执行完成
+    });
+  },
+};
+```
+
+好了，队列处理任务模拟完成。现在我们在定义任务 Cron 中去创建队列任务：
+
+```ts
+import handler from "@tanstack/react-start/server-entry";
+import { sendMail } from "./functions/send-mail";
+
+export default {
+  fetch(request: Request) {
+    return handler.fetch(request);
+  },
+  async scheduled(
+    event: ScheduledEvent,
+    env: Env,
+    _ctx: ExecutionContext
+  ): Promise<void> {
+    console.log("event", event.cron);
+    if (event.cron === "0 10 * * *") {
+      console.log("开始发送电子邮件");
+      await sendMail("example.com@gmail.com");
+    } else if (event.cron === "0 20 * * *") {
+      // 创建队列任务
+      await env.EXAMPLE_QUEUE.send({ id: 123 });
+    }
+  },
+  async queue(batch: MessageBatch<{ id: string }>, _env: Env): Promise<void> {
+    batch.messages.map(async (msg) => {
+      console.log("执行一些异步处理任务", msg.body.id);
+      msg.ack(); // 告诉队列执行完成
+    });
+  },
+};
+```
+
+现在我们在浏览器中访问：`http://localhost:3001/cdn-cgi/handler/scheduled?cron=0+20+*+*+*` 去触发我们定时任务创建一个队列任务
+
+然后查看控制台日志，可以看到创建了一个队列任务，并且执行了一个异步任务。
+
+```shell
+│ [vite] hot updated: virtual:cloudflare/worker-entry
+│ event 0 20 * * *
+│ 执行一些异步处理任务 undefined
+│ QUEUE example-queue-dev 1/1 (4ms)
+```
+
+好了队列任务的创建和执行已经介绍完毕，如果你想了解更对关于队列任务的参数定义和文档，请访问[这个地址](https://alchemy.run/providers/cloudflare/queue/)
+
+### 部署状态持久化
+
+TODO
 
 ### 总结
+
+TODO
