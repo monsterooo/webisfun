@@ -675,8 +675,61 @@ export default {
 
 ### 部署状态持久化
 
-TODO
+由于之前我们部署过，现在你可以查看 `apps/web/dist/server/wrangler.json` 文件，可以看到其中有：
+
+```json
+{
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_id": "64a40142-f6b8-4ba8-9dad-fa9b00aa4f4e",
+      "database_name": "happy-tanstack-cf-database-pre",
+      "migrations_dir": "../../packages/db/src/migrations",
+      "preview_database_id": "64a40142-f6b8-4ba8-9dad-fa9b00aa4f4e"
+    }
+  ]
+}
+```
+
+这里的 `d1_databases` 就是我们刚刚定义的数据库资源，它会自动在部署到 Cloudflare 上的时候被创建。由于这些数据我们是不会提交到 Git，所有一旦我们更换了电脑那么重新部署将会重新创建这些数据库。但是 Cloudflare 上又存在同名的数据库这个时候部署就会失败。
+
+这个的解决方案就是使用 [CloudflareStateStore](https://alchemy.run/guides/cloudflare-state-store/) 将我们的部署配置存储到 Cloudflare Durable Object 上去。这样即便我们更换电脑，配置文件也会在云上就可以找到我们的数据库资源。
+
+配置方法如下：
+
+```ts
+import alchemy from "alchemy";
+import {
+  D1Database,
+  EmailSender,
+  Queue,
+  TanStackStart,
+} from "alchemy/cloudflare";
+import { CloudflareStateStore } from "alchemy/state";
+import { config } from "dotenv";
+
+config({ path: "./.env" });
+config({ path: "../../apps/web/.env" });
+
+const stage = process.env.STAGE ?? "dev";
+// alchemy 新增一个参数，传入我们的 Store 配置对象
+const app = await alchemy("happy-tanstack-cf", {
+  stage,
+  stateStore:
+    stage !== "dev"
+      ? (scope) =>
+          new CloudflareStateStore(scope, {
+            scriptName: `launly-app-state-${stage}`,
+          })
+      : undefined,
+});
+const queueName = `example-queue-${stage}`;
+```
+
+上面我又做了一下环境区分，如果是开发环境使用本地生成的配置，只有是 Pre 或 Prod 才存储配置到 Durable Object 上去。这样即便我们更换电脑，配置文件也会在云上就可以找到我们的数据库资源。
+
+现在运行命令 `pnpm release:prod` 就可以开始部署了，如果不刚好换了电脑又没有这些配置文件。最简单的办法就是把 Cloudflare 上的 Worker 和 D1 删了重新部署一次即可。下一次部署就没问题了。
 
 ### 总结
 
-TODO
+我们使用了 Tansack Start 和 Vite 框架作为我们的业务层，然后使用 Alchemy 将我们的 Cron、Email、Queue 等项目需要的功能抽象成了代码对象去自动管理资源。这样我们就可以更多的关心业务层面而不必关心基础设置，专心完成业务逻辑提供更好的软件功能。
