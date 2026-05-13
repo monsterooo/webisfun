@@ -6,6 +6,12 @@ export const PROFILE = {
 
 export const PROJECTS = [
   {
+    title: "Launly",
+    category: "Web",
+    description: "每日 ProductHunt 热门追踪 + 每周 Top 10",
+    url: "https://launly.com",
+  },
+  {
     title: "ZoneOverlap",
     category: "Web",
     description: "可视化时区重叠，找到共享的工作时间，并安排全球会议。",
