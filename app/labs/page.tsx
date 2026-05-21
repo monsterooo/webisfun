@@ -1,5 +1,11 @@
 import { SandpackCustom } from "@/components/sandpack-custom";
 
+export const metadata = {
+  title: "Labs",
+  description: "实验性的代码片段和一些动画效果。",
+  alternates: { canonical: "/labs" },
+};
+
 export default function Snippet() {
   return (
     <main className="wrap">

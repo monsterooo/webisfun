@@ -5,6 +5,8 @@ export const metadata = {
   title: "博客",
   description:
     "记录 Web 开发路上的探索与发现，分享前端技术中那些有趣的想法与实践心得。",
+  alternates: { canonical: "/blog" },
+  openGraph: { type: "website" as const },
 };
 
 export default function Blog() {

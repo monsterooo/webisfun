@@ -5,6 +5,7 @@ import "@/styles/globals.css";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { SandPackCSS } from "@/components/sandpack/sandpack-styles";
+import { WebSiteJsonLd } from "@/components/json-ld";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,8 +29,25 @@ const plantin = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "WebIsFun",
-  description: "Webisfun is a blog about programming.",
+  metadataBase: new URL("https://webisfun.dev"),
+  title: {
+    default: "WebIsFun",
+    template: "%s | WebIsFun",
+  },
+  description:
+    "关于 CSS、动画和现代前端开发的博客，由 BuildWithZhu 撰写。",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "WebIsFun",
+    locale: "zh_CN",
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@BuildWithZhu",
+  },
 };
 
 export default function RootLayout({
@@ -38,9 +56,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning>
       <head>
         <SandPackCSS />
+        <WebSiteJsonLd />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${plantin.variable} antialiased font-geist`}
