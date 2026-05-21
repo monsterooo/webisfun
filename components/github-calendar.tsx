@@ -19,8 +19,30 @@ export function GithubCalendar() {
       username="monsterooo"
       colorScheme={resolvedTheme === "dark" ? "dark" : "light"}
       fontSize={12}
-      blockSize={11}
+      blockSize={10}
       blockMargin={2}
+      weekStart={1}
+      labels={{
+        totalCount: "最近一年有 {{count}} 次提交",
+        months: [
+          "一月",
+          "二月",
+          "三月",
+          "四月",
+          "五月",
+          "六月",
+          "七月",
+          "八月",
+          "九月",
+          "十月",
+          "十一月",
+          "十二月",
+        ],
+        legend: {
+          less: "少",
+          more: "多",
+        },
+      }}
     />
   );
 }
