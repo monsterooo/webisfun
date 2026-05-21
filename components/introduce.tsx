@@ -1,3 +1,5 @@
+import { GithubCalendar } from "./github-calendar";
+
 export function Introduce() {
   return (
     <section className="py-16">
@@ -8,7 +10,7 @@ export function Introduce() {
         构建全栈 Web
         应用程序，提供现代化、响应式且可扩展的解决方案。专注于无缝的用户体验和有趣的动画效果。
       </p>
-      <div className="flex gap-4 opacity-70">
+      <div className="flex gap-4 opacity-70 mt-0">
         <a
           href="https://github.com/monsterooo"
           className="text-sm hover:underline"
@@ -27,6 +29,10 @@ export function Introduce() {
         >
           Twitter
         </a>
+      </div>
+
+      <div className="opacity-80 mt-8">
+        <GithubCalendar />
       </div>
     </section>
   );
