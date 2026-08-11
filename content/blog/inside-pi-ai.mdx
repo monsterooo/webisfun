@@ -1,0 +1,103 @@
+---
+title: "pi-ai 源码剖析：为 Agent 工作流构建统一的 LLM 接口"
+summary: "pi-ai 是 Earendil 开源的统一多供应商 LLM API 接口的库，提供统一的流式调用、工具调用、自动鉴权、费用跟踪、跨模型切换和上下文交接能力的底层库。"
+author: "BuildWithZhu"
+publishedAt: "2026-08-11"
+published: false
+image: ""
+category: ""
+---
+
+[pi-ai](https://github.com/earendil-works/pi/blob/main/packages/ai) 是 [Pi](http://pi.dev/) 一系列开源 Agent 库中的一个底层库，它主要负责提供：提供统一的流式调用、工具调用、自动鉴权、费用跟踪、跨模型切换和上下文交接能力。
+
+同时它支持市面上几乎所有主流的 AI 模型和任意支持 OpenAI-compatible API 接口的模型，本篇文章我将结合自己的使用经验来对它进行一个剖析。
+
+<Callout title="目标受众" type="info">
+  这是是一个对所有对 Pi 库感兴趣的人写的，只要你对 Pi
+  有一定的兴趣并且想要学习更多关于 Pi 的知识，那么我将会尽力帮助你。
+  本篇文章是纯手工书写，如有错误请指出，我会及时修正。
+</Callout>
+
+## 如何调试
+
+基础的使用方法这里就不过多的说明，请查看 [Quick Start](https://github.com/earendil-works/pi/tree/main/packages/ai#quick-start) 了解如何使用。
+
+这里我想分享的是我是如何调试的，因为有了好的调试方法我们才能更好的断点和调试它。
+
+### 克隆仓库
+
+首先你需要将 pi-ai 仓库克隆到本地：
+
+```bash
+git clone https://github.com/earendil-works/pi.git
+```
+
+克隆完毕以后进入 pi 目录执行 `npm install --ignore-scripts` 安装依赖。
+
+### 创建调试源码
+
+然后我们在 `packages/ai/test` 目录中创建一个 `scratch-grok.ts` 文件作为我们的源码，代码如下：
+
+```ts
+import { builtinModels } from "../src/providers/all.ts";
+
+const models = builtinModels();
+console.log("models:", models.getModels());
+```
+
+### 获取模型元数据
+
+进入 `packages/ai` 目录我们运行 `npm run hydrate:model-data` 命令来获取模型元数据，它会在 `packages/ai/src/providers/data` 中生成一个模型对应的 json 文件，这个文件就是我们的模型元数据。
+
+下面就是 xai 的模型元数据(josn数据有省略)：
+
+```json
+{
+  "openai-responses": {
+    "grok-4.5": {
+      "id": "grok-4.5",
+      "name": "Grok 4.5",
+      "api": "openai-responses",
+      "provider": "xai",
+      "baseUrl": "https://api.x.ai/v1",
+      "compat": { "supportsLongCacheRetention": false },
+      "reasoning": true,
+      "input": ["text", "image"],
+      "cost": { "input": 2, "output": 6, "cacheRead": 0.3, "cacheWrite": 0 },
+      "contextWindow": 500000,
+      "maxTokens": 500000,
+      "thinkingLevelMap": {
+        "off": null,
+        "minimal": null,
+        "low": "low",
+        "medium": "medium",
+        "high": "high",
+        "xhigh": null,
+        "max": null
+      }
+    }
+  }
+}
+```
+
+上面的模型元素数据表示了我们模型的 api 调用方式、能力、价格等信息。
+
+### 创建 VSCode 调试配置
+
+接着创建 `.vscode/launch.json` 文件，内容如下：
+
+```json
+{
+  "type": "node",
+  "request": "launch",
+  "name": "pi-ai scratch",
+  "cwd": "${workspaceFolder}/packages/ai",
+  "runtimeArgs": ["--inspect-brk"],
+  "program": "${workspaceFolder}/packages/ai/test/scratch-grok.ts",
+  "env": { "GROK_API_KEY": "${env:GROK_API_KEY}" }
+}
+```
+
+![pi-ai 调试配置](/images/vscode-debug-pi-ai.png "pi-ai 调试配置")
+
+现在打上断点然后运行和调试即可进入调试模型。
