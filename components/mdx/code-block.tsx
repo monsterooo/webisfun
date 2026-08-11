@@ -1,4 +1,9 @@
 import { codeToHtml } from "shiki";
+import {
+  resolveCodeBlockLanguage,
+  shouldRenderAsMermaid,
+} from "@/lib/code-block-language";
+import { Mermaid } from "./mermaid";
 
 interface CodeBlockProps {
   children: React.ReactNode & {
@@ -15,7 +20,12 @@ export async function CodeBlock({
     props: { className = "", children },
   },
 }: CodeBlockProps) {
-  const lang = className.replace("language-", "");
+  const lang = resolveCodeBlockLanguage(className);
+
+  if (shouldRenderAsMermaid(lang)) {
+    return <Mermaid chart={children} />;
+  }
+
   const code = await codeToHtml(children, {
     lang: lang,
     theme: "github-dark",

@@ -213,6 +213,25 @@
     margin-inline: auto;
   }
 
+  /* Mermaid: outer MDX wrapper sets size via className/style */
+  [data-mermaid-frame] > [data-mermaid-viewer] {
+    height: 100%;
+    margin-block: 0;
+  }
+
+  /* Keep diagram text readable on the code-block-like surface */
+  [data-mermaid-surface] svg {
+    color: #e1e4e8;
+  }
+
+  [data-mermaid-surface] .nodeLabel,
+  [data-mermaid-surface] .edgeLabel,
+  [data-mermaid-surface] .label,
+  [data-mermaid-surface] .cluster-label {
+    color: #e1e4e8;
+  }
+
+
   .wrap {
     @apply max-w-3xl mx-auto md:px-9 px-4;
   }

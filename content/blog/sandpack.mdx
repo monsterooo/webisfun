@@ -8,6 +8,47 @@ image: ""
 category: ""
 ---
 
+## Sandpack
+
+```mermaid
+flowchart LR
+  subgraph providers["Provider 层（账号 / 产品）"]
+    P_OAI["openai"]
+    P_OR["openrouter"]
+    P_ANT["anthropic"]
+    P_COP["github-copilot"]
+    P_BED["amazon-bedrock"]
+  end
+
+  subgraph apis["Api 层（wire protocol）"]
+    A_OC["openai-completions"]
+    A_OR["openai-responses"]
+    A_AM["anthropic-messages"]
+    A_BC["bedrock-converse-stream"]
+    A_GG["google-generative-ai"]
+  end
+
+  P_OAI --> A_OC
+  P_OAI --> A_OR
+  P_OR --> A_OC
+  P_OR --> A_OR
+  P_ANT --> A_AM
+  P_COP --> A_OC
+  P_COP --> A_AM
+  P_BED --> A_BC
+```
+
+{/* Custom viewport size: wrap fence with data-mermaid-frame + height/width classes */}
+
+<div data-mermaid-frame className="h-[600px] w-full">
+```mermaid
+flowchart TD
+  A[Start] --> B{Sized frame?}
+  B -->|yes| C[Fills parent 500px]
+  B -->|no| D[Default min 420px / 60vh]
+```
+</div>
+
 ```tsx
 "use client";
 
